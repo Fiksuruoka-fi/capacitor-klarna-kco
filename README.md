@@ -26,7 +26,7 @@ npx cap sync
 Include configuration to `capacitor.config.json`
 ```json
 {
-  plugins: {
+  "plugins": {
     "KlarnaKco": {
       "returnUrlIos": "app-return-url://"
     }
