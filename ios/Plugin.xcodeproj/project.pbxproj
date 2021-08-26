@@ -9,7 +9,10 @@
 /* Begin PBXBuildFile section */
 		03FC29A292ACC40490383A1F /* Pods_Plugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B2A61DA5A1F2DD4F959604D /* Pods_Plugin.framework */; };
 		20C0B05DCFC8E3958A738AF2 /* Pods_PluginTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6753A823D3815DB436415E3 /* Pods_PluginTests.framework */; };
-		2F98D68224C9AAE500613A4C /* KlarnaKco.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F98D68124C9AAE400613A4C /* KlarnaKco.swift */; };
+		247E070326D557E9005BB323 /* KlarnaEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247E070226D557E9005BB323 /* KlarnaEvents.swift */; };
+		247E070526D558B2005BB323 /* KlarnaKco.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247E070426D558B2005BB323 /* KlarnaKco.swift */; };
+		247E070726D63EA5005BB323 /* KlarnaKcoConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247E070626D63EA5005BB323 /* KlarnaKcoConfig.swift */; };
+		247E070926D6AD34005BB323 /* KlarnaLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247E070826D6AD34005BB323 /* KlarnaLogging.swift */; };
 		50ADFF92201F53D600D50D53 /* Plugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADFF88201F53D600D50D53 /* Plugin.framework */; };
 		50ADFF97201F53D600D50D53 /* KlarnaKcoPluginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFF96201F53D600D50D53 /* KlarnaKcoPluginTests.swift */; };
 		50ADFF99201F53D600D50D53 /* KlarnaKcoPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ADFF8B201F53D600D50D53 /* KlarnaKcoPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -29,7 +32,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2F98D68124C9AAE400613A4C /* KlarnaKco.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KlarnaKco.swift; sourceTree = "<group>"; };
+		247E070226D557E9005BB323 /* KlarnaEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaEvents.swift; sourceTree = "<group>"; };
+		247E070426D558B2005BB323 /* KlarnaKco.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaKco.swift; sourceTree = "<group>"; };
+		247E070626D63EA5005BB323 /* KlarnaKcoConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaKcoConfig.swift; sourceTree = "<group>"; };
+		247E070826D6AD34005BB323 /* KlarnaLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaLogging.swift; sourceTree = "<group>"; };
 		3B2A61DA5A1F2DD4F959604D /* Pods_Plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50ADFF88201F53D600D50D53 /* Plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50ADFF8B201F53D600D50D53 /* KlarnaKcoPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KlarnaKcoPlugin.h; sourceTree = "<group>"; };
@@ -93,10 +99,13 @@
 			isa = PBXGroup;
 			children = (
 				50E1A94720377CB70090CE1A /* KlarnaKcoPlugin.swift */,
-				2F98D68124C9AAE400613A4C /* KlarnaKco.swift */,
 				50ADFF8B201F53D600D50D53 /* KlarnaKcoPlugin.h */,
 				50ADFFA72020EE4F00D50D53 /* KlarnaKcoPlugin.m */,
 				50ADFF8C201F53D600D50D53 /* Info.plist */,
+				247E070226D557E9005BB323 /* KlarnaEvents.swift */,
+				247E070426D558B2005BB323 /* KlarnaKco.swift */,
+				247E070626D63EA5005BB323 /* KlarnaKcoConfig.swift */,
+				247E070826D6AD34005BB323 /* KlarnaLogging.swift */,
 			);
 			path = Plugin;
 			sourceTree = "<group>";
@@ -191,7 +200,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Max Lynch";
 				TargetAttributes = {
 					50ADFF87201F53D600D50D53 = {
@@ -270,11 +279,13 @@
 				"${PODS_ROOT}/Target Support Files/Pods-PluginTests/Pods-PluginTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Capacitor/Capacitor.framework",
 				"${BUILT_PRODUCTS_DIR}/CapacitorCordova/Cordova.framework",
+				"${PODS_ROOT}/KlarnaMobileSDK/ios/full/xcode-12.3-fat/KlarnaMobileSDK.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Capacitor.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cordova.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KlarnaMobileSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -306,8 +317,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				247E070926D6AD34005BB323 /* KlarnaLogging.swift in Sources */,
+				247E070526D558B2005BB323 /* KlarnaKco.swift in Sources */,
+				247E070326D557E9005BB323 /* KlarnaEvents.swift in Sources */,
+				247E070726D63EA5005BB323 /* KlarnaKcoConfig.swift in Sources */,
 				50E1A94820377CB70090CE1A /* KlarnaKcoPlugin.swift in Sources */,
-				2F98D68224C9AAE500613A4C /* KlarnaKco.swift in Sources */,
 				50ADFFA82020EE4F00D50D53 /* KlarnaKcoPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,6 +370,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -422,6 +437,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

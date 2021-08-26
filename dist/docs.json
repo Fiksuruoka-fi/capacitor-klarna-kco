@@ -1,0 +1,283 @@
+{
+  "api": {
+    "name": "KlarnaKcoPlugin",
+    "slug": "klarnakcoplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "echo",
+        "signature": "(options: { value: string; }) => any",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ value: string; }"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "echo"
+      },
+      {
+        "name": "deviceIdentifier",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "deviceidentifier"
+      },
+      {
+        "name": "setLoggingLevel",
+        "signature": "(options: { value: KlarnaLoggingLevel; }) => any",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ value: KlarnaLoggingLevel; }"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "KlarnaLoggingLevel"
+        ],
+        "slug": "setlogginglevel"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'klarnaWillShowFullscreen', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"klarnaWillShowFullscreen\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "() => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the Klarna fullscreen view is about to be shown.",
+        "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'klarnaDidShowFullscreen', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"klarnaDidShowFullscreen\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "() => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the Klarna fullscreen view is shown.",
+        "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'klarnaWillHideFullscreen', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"klarnaWillHideFullscreen\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "() => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the Klarna fullscreen view is about to hide.",
+        "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'klarnaDidHideFullscreen', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"klarnaDidHideFullscreen\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "() => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the Klarna fullscreen view is hidden.",
+        "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'klarnaFailed', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"klarnaFailed\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "() => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the Klarna fails.",
+        "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "KlarnaLoggingLevel",
+      "slug": "klarnalogginglevel",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "value",
+          "tags": [
+            {
+              "text": [
+                {
+                  "text": "1.0.0",
+                  "kind": "text"
+                }
+              ],
+              "name": "since"
+            },
+            {
+              "text": [
+                {
+                  "text": "native",
+                  "kind": "text"
+                }
+              ],
+              "name": "default"
+            },
+            {
+              "text": [
+                {
+                  "text": "\"verbose\"",
+                  "kind": "text"
+                }
+              ],
+              "name": "example"
+            }
+          ],
+          "docs": "Configure the Klarna SDK logging level.",
+          "complexTypes": [],
+          "type": "\"error\" | \"off\" | \"verbose\""
+        }
+      ]
+    },
+    {
+      "name": "PluginListenerHandle",
+      "slug": "pluginlistenerhandle",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "remove",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => any"
+        }
+      ]
+    }
+  ],
+  "enums": []
+}

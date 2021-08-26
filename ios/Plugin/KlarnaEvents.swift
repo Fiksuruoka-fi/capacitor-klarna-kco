@@ -1,9 +1,7 @@
-//
-//  KlarnaEvents.swift
-//  Plugin
-//
-//  Created by Eljas Jalo on 24.8.2021.
-//  Copyright © 2021 Max Lynch. All rights reserved.
-//
-
-import Foundation
+public enum KlarnaEvents: String {
+    case WillShow = "klarnaWillShowFullscreenContent"
+    case DidShow = "klarnaDidShowFullscreenContent"
+    case WillHide = "klarnaWillHideFullscreenContent"
+    case DidHide = "klarnaDidHideFullscreenContent"
+    case Failed = "klarnaFailed"
+}
