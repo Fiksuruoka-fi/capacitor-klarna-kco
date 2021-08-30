@@ -21,7 +21,6 @@ class KlarnaKco: NSObject {
         super.init()
         
         self.initKlarnaHybridSdk(config: config)
-        self.sdk?.addWebView(webView)
     }
     
     @objc func deviceIdentifier() -> String {
@@ -34,6 +33,7 @@ class KlarnaKco: NSObject {
     
     private func initKlarnaHybridSdk(config: KlarnaKcoConfig) {
         self.sdk = KlarnaHybridSDK(returnUrl: config.iosReturnUrl!, eventListener: self)
+        self.sdk?.addWebView(self.bridge.webView!)
     }
 }
 
