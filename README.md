@@ -4,17 +4,7 @@ Klarna Checkout integration to Capacitor.js
 
 ## Installation
 
-Using npm:
-
-```bash
-npm install @capacitor-community/intercom
-```
-
-Using yarn:
-
-```bash
-yarn add @capacitor-community/intercom
-```
+TODO
 
 Sync native files:
 
