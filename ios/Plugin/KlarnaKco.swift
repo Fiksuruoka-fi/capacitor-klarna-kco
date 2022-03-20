@@ -30,68 +30,33 @@ class KlarnaKco: NSObject {
         self.plugin.notifyListeners(key, data: data ?? [:])
     }
     
-    @objc func setSnippet(snippet: String) {
-        self.checkout?.setSnippet(snippet)
+    @objc func viewDidLoad() {
+        self.checkout?.notifyViewDidLoad()
+    }
+    
+    private func handle(_ notification: Notification?) {
+        let name = notification?.userInfo?[KCOSignalNameKey] as? String ?? ""
+        let data = notification?.userInfo?[KCOSignalDataKey] as? [AnyHashable : Any] ?? [:]
+        
+        print("[Klarna Checkout] Receive notification \(name), \(data.description)")
+        
+        if name == "complete" {
+            handleCompletionUri(data["uri"] as? String)
+        }
+    }
+    
+    private func handleCompletionUri(_ uri: String?) {
+        if uri != nil && (uri != nil) && (uri?.count ?? 0) > 0 {
+            let url = URL(string: uri ?? "")
+            if let url = url {
+                print("[Klarna Checkout] Completion URL: \(url)")
+                self.bridge.webView?.load(URLRequest(url: url))
+            }
+        }
     }
     
     private func initKlarnaHybridSdk(config: KlarnaKcoConfig) {
-        self.checkout = KCOKlarnaCheckout.init(viewController: self.bridge.viewController!, return: URL(string: URL))
-        self.checkout.
-        
-        
-//        self.sdk = KlarnaHybridSDK(returnUrl: URL(string: URL)!, klarnaEventListener: self)
-        
-//        (returnUrl: config.iosReturnUrl!, eventListener: self)
-//        self.sdk?.addWebView(self.bridge.webView!)
-    }
-}
-
-extension KlarnaKco: WKNavigationDelegate {
-    @objc func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        self.sdk?.newPageLoad(in: self.bridge.webView!)
-    }
-
-    @objc func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        let shouldFollow = self.sdk?.shouldFollowNavigation(withRequest: navigationAction.request)
-        decisionHandler(shouldFollow! ? WKNavigationActionPolicy.allow : WKNavigationActionPolicy.cancel)
-    }
-}
-
-extension KlarnaKco: KlarnaFullscreenEventListener, KlarnaEventListener {
-    func klarnaComponent(_ view: KlarnaComponent, didReceiveEvent event: String, params: [String : Any]) {
-        print("[KlarnaHybridSDK]: did recieve event: \(params.description)")
-        self.notifyWeb(key: event, data: params)
-    }
-
-    func klarnaComponent(_ view: KlarnaComponent, didReceiveError error: KlarnaMobileSDKError) {
-        print("[KlarnaHybridSDK]: did recieve error: \(error.debugDescription)")
-        self.notifyWeb(key: KlarnaEvents.Failed.rawValue, data: ["message": error.message])
-    }
-    
-    
-    @objc func klarnaFailed(inWebView webView: KlarnaWebView, withError error: KlarnaMobileSDKError) {
-        self.notifyWeb(key: KlarnaEvents.Failed.rawValue, data: ["message": error.message])
-    }
-    
-    @objc func klarnaWillShowFullscreen(inWebView webView: KlarnaWebView, completionHandler: @escaping () -> Void) {
-        self.notifyWeb(key: KlarnaEvents.WillShow.rawValue, data: [:])
-        completionHandler()
-    }
-
-    @objc func klarnaDidShowFullscreen(inWebView webView: KlarnaWebView, completionHandler: @escaping () -> Void) {
-        self.notifyWeb(key: KlarnaEvents.DidShow.rawValue, data: nil)
-        completionHandler()
-    }
-
-    @objc func klarnaWillHideFullscreen(inWebView webView: KlarnaWebView, completionHandler: @escaping () -> Void) {
-        self.notifyWeb(key: KlarnaEvents.WillHide.rawValue, data: nil)
-        completionHandler()
-    }
-
-    @objc func klarnaDidHideFullscreen(inWebView webView: KlarnaWebView, completionHandler: @escaping () -> Void) {
-        self.notifyWeb(key: KlarnaEvents.DidHide.rawValue, data: nil)
-        completionHandler()
+        self.checkout = KCOKlarnaCheckout(viewController: self.bridge.viewController!, return: self.config.iosReturnUrl)
+        self.checkout?.setWebView(self.bridge.webView)
     }
 }

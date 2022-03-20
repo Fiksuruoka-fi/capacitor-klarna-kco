@@ -14,11 +14,9 @@ public class KlarnaKcoPlugin: CAPPlugin {
         self.implementation = KlarnaKco(plugin: self, config: klarnaKcoConfig())
     }
 
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        call.resolve([
-            "value": value
-        ])
+    @objc func viewDidLoad(_ call: CAPPluginCall) {
+        implementation?.viewDidLoad()
+        call.resolve()
     }
     
     @objc func deviceIdentifier(_ call: CAPPluginCall) {
@@ -44,7 +42,7 @@ public class KlarnaKcoPlugin: CAPPlugin {
     private func klarnaKcoConfig() -> KlarnaKcoConfig {
         var config = KlarnaKcoConfig()
 
-        if let iosReturnUrl = URL.init(string: getConfigValue("iosReturnUrl") as! String) {
+        if let iosReturnUrl = URL(string: getConfigValue("iosReturnUrl") as! String) {
             config.iosReturnUrl = iosReturnUrl
         }
     
