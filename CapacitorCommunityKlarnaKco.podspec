@@ -15,5 +15,6 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.dependency 'Capacitor'
   s.dependency 'KlarnaMobileSDK'
+  s.dependency 'KlarnaCheckoutSDK'
   s.swift_version = '5.1'
 end
