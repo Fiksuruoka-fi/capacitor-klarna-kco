@@ -3,9 +3,8 @@ import { WebPlugin } from '@capacitor/core';
 import type { KlarnaKcoPlugin, KlarnaLoggingLevel } from './definitions';
 
 export class KlarnaKcoWeb extends WebPlugin implements KlarnaKcoPlugin {
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+  async viewDidLoad(): Promise<void> {
+    throw this.unimplemented('Not implemented on web.');
   }
 
   async deviceIdentifier(): Promise<void> {
