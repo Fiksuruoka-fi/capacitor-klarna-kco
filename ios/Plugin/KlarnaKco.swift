@@ -22,24 +22,44 @@ class KlarnaKco: NSObject {
         self.initKlarnaHybridSdk(config: config)
     }
     
-    @objc func deviceIdentifier() -> String {
+    private func initKlarnaHybridSdk(config: KlarnaKcoConfig) {
+        if let klarnaCheckout = KCOKlarnaCheckout(
+            viewController: self.bridge.viewController!,
+            return: self.config.iosReturnUrl) {
+            klarnaCheckout.setWebView(self.bridge.webView)
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleNotification),
+                name: NSNotification.Name.KCOSignal,
+                object: nil
+            )
+            self.checkout = klarnaCheckout
+            print("[Klarna Checkout] Checkout SDK initialized")
+        }
+    }
+    
+    @objc
+    func deviceIdentifier() -> String {
         return KlarnaMobileSDKCommon.deviceIdentifier()
     }
     
-    @objc func notifyWeb(key: String, data: [String : Any]?) -> Void {
+    @objc
+    func notifyWeb(key: String, data: [String : Any]?) -> Void {
         self.plugin.notifyListeners(key, data: data ?? [:])
     }
     
-    @objc func viewDidLoad() {
+    @objc
+    func viewDidLoad() {
         self.checkout?.notifyViewDidLoad()
     }
     
-    private func handle(_ notification: Notification?) {
+    @objc
+    func handleNotification(_ notification: Notification?) {
         let name = notification?.userInfo?[KCOSignalNameKey] as? String ?? ""
         let data = notification?.userInfo?[KCOSignalDataKey] as? [AnyHashable : Any] ?? [:]
         
         print("[Klarna Checkout] Receive notification \(name), \(data.description)")
-        
+
         if name == "complete" {
             handleCompletionUri(data["uri"] as? String)
         }
@@ -50,13 +70,9 @@ class KlarnaKco: NSObject {
             let url = URL(string: uri ?? "")
             if let url = url {
                 print("[Klarna Checkout] Completion URL: \(url)")
-                self.bridge.webView?.load(URLRequest(url: url))
+                self.notifyWeb(key: "complete", data: ["url":url])
+                return
             }
         }
-    }
-    
-    private func initKlarnaHybridSdk(config: KlarnaKcoConfig) {
-        self.checkout = KCOKlarnaCheckout(viewController: self.bridge.viewController!, return: self.config.iosReturnUrl)
-        self.checkout?.setWebView(self.bridge.webView)
     }
 }

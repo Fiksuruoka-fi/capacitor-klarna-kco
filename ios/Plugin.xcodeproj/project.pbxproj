@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		03FC29A292ACC40490383A1F /* Pods_Plugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B2A61DA5A1F2DD4F959604D /* Pods_Plugin.framework */; };
 		20C0B05DCFC8E3958A738AF2 /* Pods_PluginTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6753A823D3815DB436415E3 /* Pods_PluginTests.framework */; };
-		247E070326D557E9005BB323 /* KlarnaEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247E070226D557E9005BB323 /* KlarnaEvents.swift */; };
 		247E070526D558B2005BB323 /* KlarnaKco.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247E070426D558B2005BB323 /* KlarnaKco.swift */; };
 		247E070726D63EA5005BB323 /* KlarnaKcoConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247E070626D63EA5005BB323 /* KlarnaKcoConfig.swift */; };
 		247E070926D6AD34005BB323 /* KlarnaLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247E070826D6AD34005BB323 /* KlarnaLogging.swift */; };
@@ -32,7 +31,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		247E070226D557E9005BB323 /* KlarnaEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaEvents.swift; sourceTree = "<group>"; };
 		247E070426D558B2005BB323 /* KlarnaKco.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaKco.swift; sourceTree = "<group>"; };
 		247E070626D63EA5005BB323 /* KlarnaKcoConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaKcoConfig.swift; sourceTree = "<group>"; };
 		247E070826D6AD34005BB323 /* KlarnaLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaLogging.swift; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 				50ADFF8B201F53D600D50D53 /* KlarnaKcoPlugin.h */,
 				50ADFFA72020EE4F00D50D53 /* KlarnaKcoPlugin.m */,
 				50ADFF8C201F53D600D50D53 /* Info.plist */,
-				247E070226D557E9005BB323 /* KlarnaEvents.swift */,
 				247E070426D558B2005BB323 /* KlarnaKco.swift */,
 				247E070626D63EA5005BB323 /* KlarnaKcoConfig.swift */,
 				247E070826D6AD34005BB323 /* KlarnaLogging.swift */,
@@ -321,7 +318,6 @@
 			files = (
 				247E070926D6AD34005BB323 /* KlarnaLogging.swift in Sources */,
 				247E070526D558B2005BB323 /* KlarnaKco.swift in Sources */,
-				247E070326D557E9005BB323 /* KlarnaEvents.swift in Sources */,
 				247E070726D63EA5005BB323 /* KlarnaKcoConfig.swift in Sources */,
 				50E1A94820377CB70090CE1A /* KlarnaKcoPlugin.swift in Sources */,
 				50ADFFA82020EE4F00D50D53 /* KlarnaKcoPlugin.m in Sources */,
