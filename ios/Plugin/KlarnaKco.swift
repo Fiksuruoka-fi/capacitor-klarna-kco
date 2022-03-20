@@ -59,6 +59,7 @@ class KlarnaKco: NSObject {
         let data = notification?.userInfo?[KCOSignalDataKey] as? [AnyHashable : Any] ?? [:]
         
         print("[Klarna Checkout] Receive notification \(name), \(data.description)")
+        self.notifyWeb(key: name, data: [:])
 
         if name == "complete" {
             handleCompletionUri(data["uri"] as? String)

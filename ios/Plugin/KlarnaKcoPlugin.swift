@@ -37,8 +37,6 @@ public class KlarnaKcoPlugin: CAPPlugin {
         
     }
     
-    
-    
     private func klarnaKcoConfig() -> KlarnaKcoConfig {
         var config = KlarnaKcoConfig()
 
