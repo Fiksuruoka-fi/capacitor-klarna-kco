@@ -7,6 +7,10 @@ export class KlarnaKcoWeb extends WebPlugin implements KlarnaKcoPlugin {
     throw this.unimplemented('Not implemented on web.');
   }
 
+  async destroy(): Promise<void> {
+    throw this.unimplemented('Not implemented on web.');
+  }
+
   async deviceIdentifier(): Promise<void> {
     throw this.unimplemented('Not implemented on web.');
   }

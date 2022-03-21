@@ -19,6 +19,11 @@ public class KlarnaKcoPlugin: CAPPlugin {
         call.resolve()
     }
     
+    @objc func destroy(_ call: CAPPluginCall) {
+        implementation?.destroy()
+        call.resolve()
+    }
+    
     @objc func deviceIdentifier(_ call: CAPPluginCall) {
         let result = implementation?.deviceIdentifier()
         call.resolve(["result": result ?? "undefined"])

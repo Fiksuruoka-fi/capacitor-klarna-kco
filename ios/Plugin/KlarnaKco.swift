@@ -54,13 +54,15 @@ class KlarnaKco: NSObject {
     }
     
     @objc
+    func destroy() {
+        self.checkout?.destroy()
+    }
+    
+    @objc
     func handleNotification(_ notification: Notification?) {
         let name = notification?.userInfo?[KCOSignalNameKey] as? String ?? ""
         let data = notification?.userInfo?[KCOSignalDataKey] as? [AnyHashable : Any] ?? [:]
-        
-        print("[Klarna Checkout] Receive notification \(name), \(data.description)")
         self.notifyWeb(key: name, data: [:])
-
         if name == "complete" {
             handleCompletionUri(data["uri"] as? String)
         }
@@ -70,8 +72,10 @@ class KlarnaKco: NSObject {
         if uri != nil && (uri != nil) && (uri?.count ?? 0) > 0 {
             let url = URL(string: uri ?? "")
             if let url = url {
-                print("[Klarna Checkout] Completion URL: \(url)")
-                self.notifyWeb(key: "complete", data: ["url":url])
+                self.notifyWeb(key: "complete", data: [
+                    "url": url.absoluteString,
+                    "path" : url.path
+                ])
                 return
             }
         }
