@@ -34,13 +34,10 @@ import { KlarnaKco } from "@capacitor-community/intercom";
 
 <docgen-index>
 
-* [`echo(...)`](#echo)
+* [`viewDidLoad()`](#viewdidload)
+* [`destroy()`](#destroy)
 * [`deviceIdentifier()`](#deviceidentifier)
 * [`setLoggingLevel(...)`](#setlogginglevel)
-* [`addListener(...)`](#addlistener)
-* [`addListener(...)`](#addlistener)
-* [`addListener(...)`](#addlistener)
-* [`addListener(...)`](#addlistener)
 * [`addListener(...)`](#addlistener)
 * [Interfaces](#interfaces)
 
@@ -49,17 +46,20 @@ import { KlarnaKco } from "@capacitor-community/intercom";
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### echo(...)
+### viewDidLoad()
 
 ```typescript
-echo(options: { value: string; }) => any
+viewDidLoad() => Promise<void>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+--------------------
 
-**Returns:** <code>any</code>
+
+### destroy()
+
+```typescript
+destroy() => Promise<void>
+```
 
 --------------------
 
@@ -67,10 +67,8 @@ echo(options: { value: string; }) => any
 ### deviceIdentifier()
 
 ```typescript
-deviceIdentifier() => any
+deviceIdentifier() => Promise<void>
 ```
-
-**Returns:** <code>any</code>
 
 --------------------
 
@@ -78,102 +76,28 @@ deviceIdentifier() => any
 ### setLoggingLevel(...)
 
 ```typescript
-setLoggingLevel(options: { value: KlarnaLoggingLevel; }) => any
+setLoggingLevel(options: { value: KlarnaLoggingLevel; }) => Promise<void>
 ```
 
 | Param         | Type                                                                          |
 | ------------- | ----------------------------------------------------------------------------- |
 | **`options`** | <code>{ value: <a href="#klarnalogginglevel">KlarnaLoggingLevel</a>; }</code> |
 
-**Returns:** <code>any</code>
-
 --------------------
 
 
 ### addListener(...)
 
 ```typescript
-addListener(eventName: 'klarnaWillShowFullscreen', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'complete', listenerFunc: (data: { url: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
 ```
 
-Listen for when the Klarna fullscreen view is about to be shown.
+Listen for when the Klarna Checkout is complete.
 
-| Param              | Type                                    |
-| ------------------ | --------------------------------------- |
-| **`eventName`**    | <code>"klarnaWillShowFullscreen"</code> |
-| **`listenerFunc`** | <code>() =&gt; void</code>              |
-
-**Returns:** <code>any</code>
-
---------------------
-
-
-### addListener(...)
-
-```typescript
-addListener(eventName: 'klarnaDidShowFullscreen', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle
-```
-
-Listen for when the Klarna fullscreen view is shown.
-
-| Param              | Type                                   |
-| ------------------ | -------------------------------------- |
-| **`eventName`**    | <code>"klarnaDidShowFullscreen"</code> |
-| **`listenerFunc`** | <code>() =&gt; void</code>             |
-
-**Returns:** <code>any</code>
-
---------------------
-
-
-### addListener(...)
-
-```typescript
-addListener(eventName: 'klarnaWillHideFullscreen', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle
-```
-
-Listen for when the Klarna fullscreen view is about to hide.
-
-| Param              | Type                                    |
-| ------------------ | --------------------------------------- |
-| **`eventName`**    | <code>"klarnaWillHideFullscreen"</code> |
-| **`listenerFunc`** | <code>() =&gt; void</code>              |
-
-**Returns:** <code>any</code>
-
---------------------
-
-
-### addListener(...)
-
-```typescript
-addListener(eventName: 'klarnaDidHideFullscreen', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle
-```
-
-Listen for when the Klarna fullscreen view is hidden.
-
-| Param              | Type                                   |
-| ------------------ | -------------------------------------- |
-| **`eventName`**    | <code>"klarnaDidHideFullscreen"</code> |
-| **`listenerFunc`** | <code>() =&gt; void</code>             |
-
-**Returns:** <code>any</code>
-
---------------------
-
-
-### addListener(...)
-
-```typescript
-addListener(eventName: 'klarnaFailed', listenerFunc: () => void) => Promise<PluginListenerHandle> & PluginListenerHandle
-```
-
-Listen for when the Klarna fails.
-
-| Param              | Type                        |
-| ------------------ | --------------------------- |
-| **`eventName`**    | <code>"klarnaFailed"</code> |
-| **`listenerFunc`** | <code>() =&gt; void</code>  |
+| Param              | Type                                             |
+| ------------------ | ------------------------------------------------ |
+| **`eventName`**    | <code>"complete"</code>                          |
+| **`listenerFunc`** | <code>(data: { url: string; }) =&gt; void</code> |
 
 **Returns:** <code>any</code>
 
@@ -192,8 +116,8 @@ Listen for when the Klarna fails.
 
 #### PluginListenerHandle
 
-| Prop         | Type                      |
-| ------------ | ------------------------- |
-| **`remove`** | <code>() =&gt; any</code> |
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 </docgen-api>

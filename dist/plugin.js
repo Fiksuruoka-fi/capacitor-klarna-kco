@@ -6,9 +6,11 @@ var capacitorKlarnaKco = (function (exports, core) {
     });
 
     class KlarnaKcoWeb extends core.WebPlugin {
-        async echo(options) {
-            console.log('ECHO', options);
-            return options;
+        async viewDidLoad() {
+            throw this.unimplemented('Not implemented on web.');
+        }
+        async destroy() {
+            throw this.unimplemented('Not implemented on web.');
         }
         async deviceIdentifier() {
             throw this.unimplemented('Not implemented on web.');
@@ -29,5 +31,5 @@ var capacitorKlarnaKco = (function (exports, core) {
 
     return exports;
 
-}({}, capacitorExports));
+})({}, capacitorExports);
 //# sourceMappingURL=plugin.js.map

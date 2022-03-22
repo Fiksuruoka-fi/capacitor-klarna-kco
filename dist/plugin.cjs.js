@@ -9,9 +9,11 @@ const KlarnaKco = core.registerPlugin('KlarnaKco', {
 });
 
 class KlarnaKcoWeb extends core.WebPlugin {
-    async echo(options) {
-        console.log('ECHO', options);
-        return options;
+    async viewDidLoad() {
+        throw this.unimplemented('Not implemented on web.');
+    }
+    async destroy() {
+        throw this.unimplemented('Not implemented on web.');
     }
     async deviceIdentifier() {
         throw this.unimplemented('Not implemented on web.');
