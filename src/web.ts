@@ -3,7 +3,11 @@ import { WebPlugin } from '@capacitor/core';
 import type { KlarnaKcoPlugin, KlarnaLoggingLevel } from './definitions';
 
 export class KlarnaKcoWeb extends WebPlugin implements KlarnaKcoPlugin {
-  async viewDidLoad(): Promise<void> {
+  async initialize(): Promise<void> {
+    throw this.unimplemented('Not implemented on web.');
+  }
+
+  async loaded(): Promise<void> {
     throw this.unimplemented('Not implemented on web.');
   }
 
