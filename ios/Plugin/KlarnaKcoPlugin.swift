@@ -8,23 +8,29 @@ import KlarnaMobileSDK
  */
 @objc(KlarnaKcoPlugin)
 public class KlarnaKcoPlugin: CAPPlugin {
-    var implementation: KlarnaKco?
-
+    private var implementation: KlarnaKco?
+    
     @objc func initialize(_ call: CAPPluginCall) {
         print("[Klarna Chekout] Initialize")
-        self.implementation = KlarnaKco(plugin: self, config: klarnaKcoConfig())
-        call.resolve()
+        DispatchQueue.main.async {
+            self.implementation = KlarnaKco(plugin: self, config: self.klarnaKcoConfig())
+            call.resolve()
+        }
     }
     
     @objc func loaded(_ call: CAPPluginCall) {
         print("[Klarna Chekout] Loaded")
-        self.implementation?.loaded()
-        call.resolve()
+        DispatchQueue.main.async {
+            self.implementation?.loaded()
+            call.resolve()
+        }
     }
     
     @objc func destroy(_ call: CAPPluginCall) {
-        self.implementation?.destroy()
-        call.resolve()
+        DispatchQueue.main.async {
+            self.implementation?.destroy()
+            call.resolve()
+        }
     }
     
     @objc func deviceIdentifier(_ call: CAPPluginCall) {
