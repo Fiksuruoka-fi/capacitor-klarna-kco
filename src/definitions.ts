@@ -2,7 +2,10 @@ import type { PluginListenerHandle } from '@capacitor/core';
 
 export interface KlarnaKcoPlugin {
   destroy(): Promise<void>;
-  initialize(): Promise<void>;
+  initialize(options: {
+    checkoutUrl?: string;
+    snippet?: string;
+  }): Promise<void>;
   loaded(): Promise<void>;
   deviceIdentifier(): Promise<void>;
   setLoggingLevel(options: { value: KlarnaLoggingLevel }): Promise<void>;
