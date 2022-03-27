@@ -27,10 +27,29 @@ export interface PluginsConfig {
      * Configure the return url for the iOS.
      *
      * @since 1.0.0
-     * @default native
+     * @default ""
      * @example "app-return-url://"
      */
     iosReturnUrl?: string;
+
+    /**
+     * Set true if willing to send GET request to confirm url when checkout is completed.
+     * This requires you to handle checkout view redirect to completed page in js.
+     *
+     * @since 1.0.0
+     * @default false
+     * @example false
+     */
+    handleConfirmation?: boolean;
+
+    /**
+     * Set true if willing to handle validation errors in your application
+     *
+     * @since 1.0.0
+     * @default false
+     * @example false
+     */
+    handleValidationErrors?: boolean;
   };
 }
 

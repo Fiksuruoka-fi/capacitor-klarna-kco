@@ -3,20 +3,38 @@ import Capacitor
 import KlarnaMobileSDK
 import KlarnaCheckoutSDK
 import os
+import UIKit
 
 class KlarnaKco: NSObject {
     private let plugin: KlarnaKcoPlugin
     private let config: KlarnaKcoConfig
     private let bridge: CAPBridgeProtocol
+    private var browser: UIViewController?
     private var sdk: KlarnaHybridSDK?
     private var checkout: KCOKlarnaCheckout?
     
-    init(plugin: KlarnaKcoPlugin, config: KlarnaKcoConfig) {
+    init(plugin: KlarnaKcoPlugin, config: KlarnaKcoConfig, snippet: String?) {
         self.plugin = plugin
         self.config = config
         self.bridge = self.plugin.bridge!
         super.init()
-        self.initKlarnaHybridSdk(config: self.config)
+        
+        if (snippet == nil) {
+            initKlarnaHybridSdk(config: self.config, snippet: snippet, webView: nil)
+        }
+        
+        openBrowser(useSnippet: snippet != nil)
+    }
+    
+    func openBrowser(useSnippet: Bool) {
+        if (useSnippet) {
+            self.browser = self.checkout?.checkoutViewController
+        } else {
+            self.browser = BrowserViewController()
+        }
+        DispatchQueue.main.async {
+            self.bridge.viewController?.present(self.browser!, animated: true, completion: nil)
+        }
     }
     
     @objc func deviceIdentifier() -> String {
@@ -28,34 +46,48 @@ class KlarnaKco: NSObject {
     }
     
     @objc func loaded() {
-        print("[Klarna Chekout] Try to notify Checkout SDK")
+        print("[Klarna Checkout] Try to notify Checkout SDK")
         self.checkout?.notifyViewDidLoad()
     }
     
     @objc func destroy() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.KCOSignal, object: nil)
         self.checkout?.destroy()
+        self.browser?.dismiss(animated: true)
     }
     
     @objc func handleNotification(_ notification: Notification?) {
         let name = notification?.userInfo?[KCOSignalNameKey] as? String ?? ""
-        let data = notification?.userInfo?[KCOSignalDataKey] as? [AnyHashable : Any] ?? [:]
-        self.notifyWeb(key: name, data: [:])
+        let data = notification?.userInfo?[KCOSignalDataKey] as? [String : Any] ?? [:]
+        
+        print("[Klarna Checkout] Notification \(name.description), \(data.description)")
+
         if name == "complete" {
             handleCompletionUri(data["uri"] as? String)
+        } else {
+            self.notifyWeb(key: name, data: data)
         }
     }
     
-    func initKlarnaHybridSdk(config: KlarnaKcoConfig) {
+    func initKlarnaHybridSdk(config: KlarnaKcoConfig, snippet: String?, webView: WKWebView?) {
         if let klarnaCheckout = KCOKlarnaCheckout(
-            viewController: self.bridge.viewController!,
+            viewController: self.browser,
             return: self.config.iosReturnUrl) {
-            klarnaCheckout.setWebView(self.bridge.webView)
+            klarnaCheckout.merchantHandlesValidationErrors = self.config.handleValidationErrors
+
+            if ((snippet == nil)) {
+                klarnaCheckout.setWebView(webView)
+            } else {
+                klarnaCheckout.setSnippet(snippet)
+            }
+
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(handleNotification),
                 name: NSNotification.Name.KCOSignal,
                 object: nil
             )
+
             self.checkout = klarnaCheckout
             print("[Klarna Checkout] Checkout SDK initialized")
         }

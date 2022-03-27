@@ -11,15 +11,18 @@ public class KlarnaKcoPlugin: CAPPlugin {
     private var implementation: KlarnaKco?
     
     @objc func initialize(_ call: CAPPluginCall) {
-        print("[Klarna Chekout] Initialize")
+        print("[Klarna Checkout] Initialize")
+        let snippet = call.getString("snippet")!
+        let checkoutUrl = call.getString("checkoutUrl")!
+
         DispatchQueue.main.async {
-            self.implementation = KlarnaKco(plugin: self, config: self.klarnaKcoConfig())
+            self.implementation = KlarnaKco(plugin: self, config: self.klarnaKcoConfig(checkoutUrl: checkoutUrl), snippet: snippet)
             call.resolve()
         }
     }
     
     @objc func loaded(_ call: CAPPluginCall) {
-        print("[Klarna Chekout] Loaded")
+        print("[Klarna Checkout] Loaded")
         DispatchQueue.main.async {
             self.implementation?.loaded()
             call.resolve()
@@ -51,11 +54,25 @@ public class KlarnaKcoPlugin: CAPPlugin {
         
     }
     
-    private func klarnaKcoConfig() -> KlarnaKcoConfig {
+    private func klarnaKcoConfig(checkoutUrl: String?) -> KlarnaKcoConfig {
         var config = KlarnaKcoConfig()
+        
+        config.checkoutUrl = checkoutUrl ?? ""
 
         if let iosReturnUrl = URL(string: getConfigValue("iosReturnUrl") as! String) {
             config.iosReturnUrl = iosReturnUrl
+        }
+        
+        if let handleConfirmation = getConfigValue("handleConfirmation") as? Bool {
+            config.handleConfirmation = handleConfirmation
+        }
+        
+        if let handleValidationErrors = getConfigValue("handleValidationErrors") as? Bool {
+            config.handleValidationErrors = handleValidationErrors
+        }
+        
+        if let title = getConfigValue("title") as? String {
+            config.title = title
         }
     
         return config
