@@ -53,6 +53,24 @@ export interface PluginsConfig {
      * @example false
      */
     handleValidationErrors?: boolean;
+
+    /**
+     * Set true if willing to handle validation errors in your application
+     *
+     * @since 1.0.0
+     * @default #ffffff
+     * @example false
+     */
+    barColor?: string;
+
+    /**
+     * Set true if willing to handle validation errors in your application
+     *
+     * @since 1.0.0
+     * @default #ff3b30
+     * @example false
+     */
+    baritemColor?: string;
   };
 }
 

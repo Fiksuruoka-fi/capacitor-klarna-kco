@@ -9,14 +9,17 @@ import KlarnaMobileSDK
 @objc(KlarnaKcoPlugin)
 public class KlarnaKcoPlugin: CAPPlugin {
     private var implementation: KlarnaKco?
+    private var config: KlarnaKcoConfig?
     
     @objc func initialize(_ call: CAPPluginCall) {
         print("[Klarna Checkout] Initialize")
-        let snippet = call.getString("snippet")!
-        let checkoutUrl = call.getString("checkoutUrl")!
+        let snippet = call.getString("snippet") ?? ""
+        let checkoutUrl = call.getString("checkoutUrl") ?? ""
+        
+        self.config = self.klarnaKcoConfig(checkoutUrl: checkoutUrl, snippet: snippet)
 
         DispatchQueue.main.async {
-            self.implementation = KlarnaKco(plugin: self, config: self.klarnaKcoConfig(checkoutUrl: checkoutUrl), snippet: snippet)
+            self.implementation = KlarnaKco(plugin: self, config: self.config!)
             call.resolve()
         }
     }
@@ -54,10 +57,11 @@ public class KlarnaKcoPlugin: CAPPlugin {
         
     }
     
-    private func klarnaKcoConfig(checkoutUrl: String?) -> KlarnaKcoConfig {
+    private func klarnaKcoConfig(checkoutUrl: String, snippet: String) -> KlarnaKcoConfig {
         var config = KlarnaKcoConfig()
         
-        config.checkoutUrl = checkoutUrl ?? ""
+        config.checkoutUrl = checkoutUrl
+        config.snippet = snippet
 
         if let iosReturnUrl = URL(string: getConfigValue("iosReturnUrl") as! String) {
             config.iosReturnUrl = iosReturnUrl

@@ -2,10 +2,10 @@ import UIKit
 import WebKit
 import KlarnaCheckoutSDK
 
-class BrowserViewController: UIViewController, WKUIDelegate {
-    var checkout: KCOKlarnaCheckout?
-    let config: KlarnaKcoConfig = KlarnaKcoConfig()
-    private var implementation: KlarnaKco?
+class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDelegate {
+    private let implementation: KlarnaKco
+    private let config: KlarnaKcoConfig
+    private var checkout: KCOKlarnaCheckout?
     
     lazy var webView: WKWebView = {
         let webConfiguration = WKWebViewConfiguration()
@@ -16,24 +16,51 @@ class BrowserViewController: UIViewController, WKUIDelegate {
         return webView
     }()
     
+    init(config: KlarnaKcoConfig, implementation: KlarnaKco)
+    {
+        self.implementation = implementation
+        self.config = config
+
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = self.config.title
-
-        setupUI()
-        setupNavItem()
-
-        self.implementation?.initKlarnaHybridSdk(config: self.config, snippet: nil, webView: self.webView)
-        loadURL(self.config.checkoutUrl)
-        self.implementation?.loaded()
+        
+        if (!self.config.checkoutUrl.isEmpty) {
+            setupWebView()
+            loadURL(self.config.checkoutUrl)
+            self.implementation.loaded()
+        } else {
+            setupEmbeddedKlarnaView()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNavBar()
+        setupNavBar(view: self.view)
     }
     
-    func setupUI() {
+    func setupEmbeddedKlarnaView() {
+        self.view.backgroundColor = .white
+        
+        let checkout = self.implementation.initKlarnaHybridSdk(self, config: self.config, webView: nil)
+
+//        checkout.checkoutViewController.internalScrollDisabled = true
+//        checkout.checkoutViewController.sizingDelegate = self
+//        checkout.checkoutViewController.parentScrollView = self.view.scrollView
+        
+        self.checkout = checkout
+        
+        self.view.addSubview(checkout.checkoutViewController.view)
+    }
+
+    func setupWebView() {
         self.view.backgroundColor = .white
         self.view.addSubview(webView)
         
@@ -47,21 +74,28 @@ class BrowserViewController: UIViewController, WKUIDelegate {
             webView.rightAnchor
                 .constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor)
         ])
-    }
-    
-    func setupNavItem() {
-        let cancelBarItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self,
-                                            action: #selector(self.cancelAction))
-        self.navigationItem.leftBarButtonItem = cancelBarItem
+        
+        self.checkout = self.implementation.initKlarnaHybridSdk(self, config: self.config, webView: self.webView)
     }
         
-    func setupNavBar() {
-        self.navigationController?.navigationBar.barTintColor = .systemBlue
-        self.navigationController?.navigationBar.tintColor = .white
+    func setupNavBar(view: UIView) {
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
+        
+        navBar.barTintColor = self.config.barColor
+        navBar.tintColor = self.config.barItemColor
+        
+        view.addSubview(navBar)
+        
+        let navItem = UINavigationItem(title: self.config.title)
+        let doneItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: #selector(cancelAction))
+        navItem.leftBarButtonItem = doneItem
+        
+        navBar.setItems([navItem], animated: false)
     }
         
     @objc func cancelAction() {
-        self.implementation?.destroy()
+        self.implementation.destroy()
+        dismiss(animated: true)
     }
 
     func loadURL(_ url: String) {
@@ -70,8 +104,12 @@ class BrowserViewController: UIViewController, WKUIDelegate {
             currentURL = "http://\(currentURL)"
         }
         if let url: URL = URL(string: currentURL) {
-            var urlRequest: URLRequest = URLRequest(url: url)
+            let urlRequest: URLRequest = URLRequest(url: url)
             self.webView.load(urlRequest)
         }
+    }
+    
+    func checkoutViewController(_ checkoutViewController: (UIViewController & KCOCheckoutViewControllerProtocol)!, didResize size: CGSize) {
+        self.view.frame.size = size
     }
 }
