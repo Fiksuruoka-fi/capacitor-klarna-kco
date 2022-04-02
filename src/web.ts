@@ -7,6 +7,10 @@ export class KlarnaKcoWeb extends WebPlugin implements KlarnaKcoPlugin {
     throw this.unimplemented('Not implemented on web.');
   }
 
+  async destroy(): Promise<void> {
+    throw this.unimplemented('Not implemented on web.');
+  }
+
   async initialize(_options: {
     checkoutUrl?: string;
     snippet?: string;
@@ -18,7 +22,11 @@ export class KlarnaKcoWeb extends WebPlugin implements KlarnaKcoPlugin {
     throw this.unimplemented('Not implemented on web.');
   }
 
-  async destroy(): Promise<void> {
+  async resume(): Promise<void> {
+    throw this.unimplemented('Not implemented on web.');
+  }
+
+  async suspend(): Promise<void> {
     throw this.unimplemented('Not implemented on web.');
   }
 }

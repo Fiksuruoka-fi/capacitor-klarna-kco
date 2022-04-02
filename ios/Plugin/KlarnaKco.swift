@@ -1,15 +1,13 @@
 import Foundation
 import Capacitor
-import KlarnaMobileSDK
 import KlarnaCheckoutSDK
 import os
 import UIKit
 
 class KlarnaKco: NSObject {
     private let config: KlarnaKcoConfig
-    private let plugin: KlarnaKcoPlugin
     private let bridge: CAPBridgeProtocol
-    private var sdk: KlarnaHybridSDK?
+    private let plugin: KlarnaKcoPlugin
     public var browser: BrowserViewController?
     public var checkout: KCOKlarnaCheckout?
     
@@ -23,23 +21,20 @@ class KlarnaKco: NSObject {
         openBrowser()
     }
     
-    func openBrowser() {
-        DispatchQueue.main.async {
-            self.browser = BrowserViewController(config: self.config, implementation: self)
-            self.bridge.viewController?.present(self.browser!, animated: true, completion: nil)
-        }
-    }
-    
-    @objc func notifyWeb(key: String, data: [String : Any]?) -> Void {
-        self.plugin.notifyListeners(key, data: data ?? [:])
-    }
-    
     @objc func alert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
             
         let vc = self.browser ?? self.bridge.viewController
         vc?.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func destroyKlarna() {
+        print("[Klarna Checkout] Destroy")
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.KCOSignal, object: nil)
+        self.browser?.dismiss(animated: true)
+        self.browser = nil
+        self.checkout?.destroy()
     }
     
     @objc func initialize() {
@@ -51,14 +46,22 @@ class KlarnaKco: NSObject {
         self.checkout?.notifyViewDidLoad()
     }
     
-    @objc func destroyKlarna() {
-        print("[Klarna Checkout] Destroy")
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.KCOSignal, object: nil)
-        self.browser?.dismiss(animated: true)
-        self.browser = nil
-        self.checkout?.destroy()
+    @objc func notifyWeb(key: String, data: [String : Any]?) -> Void {
+        self.plugin.notifyListeners(key, data: data ?? [:])
     }
     
+    func openBrowser() {
+        DispatchQueue.main.async {
+            self.browser = BrowserViewController(config: self.config, implementation: self)
+            self.bridge.viewController?.present(self.browser!, animated: true, completion: nil)
+        }
+    }
+}
+
+/**
+ * Handle Klarna notifications
+ */
+extension KlarnaKco {
     @objc func handleNotification(_ notification: Notification?) {
         let name = notification?.userInfo?[KCOSignalNameKey] as? String ?? ""
         let data = notification?.userInfo?[KCOSignalDataKey] as? [String : Any] ?? [:]
@@ -71,33 +74,7 @@ class KlarnaKco: NSObject {
             self.notifyWeb(key: name, data: data)
         }
     }
-    
-    func initKlarnaHybridSdk(_ viewController: UIViewController, config: KlarnaKcoConfig, webView: WKWebView?) -> KCOKlarnaCheckout {
-        let klarnaCheckout: KCOKlarnaCheckout = KCOKlarnaCheckout(
-            viewController: viewController,
-            return: self.config.iosReturnUrl)
 
-        klarnaCheckout.merchantHandlesValidationErrors = self.config.handleValidationErrors
-
-        if (config.snippet.isEmpty) {
-            klarnaCheckout.setWebView(webView)
-        } else {
-            klarnaCheckout.setSnippet(config.snippet)
-        }
-         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleNotification),
-            name: NSNotification.Name.KCOSignal,
-            object: nil
-        )
-
-        self.checkout = klarnaCheckout
-        print("[Klarna Checkout] Checkout SDK initialized")
-
-        return klarnaCheckout
-    }
-    
     func handleCompletionUri(_ uri: String?) {
         if uri != nil && (uri != nil) && (uri?.count ?? 0) > 0 {
             let url = URL(string: uri ?? "")
@@ -127,6 +104,36 @@ class KlarnaKco: NSObject {
                 return
             }
         }
-        
+    }
+}
+
+/**
+ * Setup Klarna SDK
+ */
+extension KlarnaKco {
+    func initKlarnaHybridSdk(_ viewController: UIViewController, config: KlarnaKcoConfig, webView: WKWebView?) -> KCOKlarnaCheckout {
+        let klarnaCheckout: KCOKlarnaCheckout = KCOKlarnaCheckout(
+            viewController: viewController,
+            return: self.config.iosReturnUrl)
+
+        klarnaCheckout.merchantHandlesValidationErrors = self.config.handleValidationErrors
+
+        if (config.snippet.isEmpty) {
+            klarnaCheckout.setWebView(webView)
+        } else {
+            klarnaCheckout.setSnippet(config.snippet)
+        }
+         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleNotification),
+            name: NSNotification.Name.KCOSignal,
+            object: nil
+        )
+
+        self.checkout = klarnaCheckout
+        print("[Klarna Checkout] Checkout SDK initialized")
+
+        return klarnaCheckout
     }
 }

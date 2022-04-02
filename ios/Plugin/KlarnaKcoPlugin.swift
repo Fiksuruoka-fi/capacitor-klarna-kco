@@ -11,6 +11,23 @@ public class KlarnaKcoPlugin: CAPPlugin {
     private var implementation: KlarnaKco?
     private var config: KlarnaKcoConfig?
     
+    @objc func alert(_ call: CAPPluginCall) {
+        let title = call.getString("title") ?? ""
+        let message = call.getString("message") ?? ""
+
+        DispatchQueue.main.async {
+            self.implementation?.alert(title: title, message: message)
+            call.resolve()
+        }
+    }
+    
+    @objc func destroy(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            self.implementation?.destroyKlarna()
+            call.resolve()
+        }
+    }
+    
     @objc func initialize(_ call: CAPPluginCall) {
         print("[Klarna Checkout] Initialize")
         let snippet = call.getString("snippet") ?? ""
@@ -42,23 +59,18 @@ public class KlarnaKcoPlugin: CAPPlugin {
         }
     }
     
-    @objc func alert(_ call: CAPPluginCall) {
-        let title = call.getString("title") ?? ""
-        let message = call.getString("message") ?? ""
+    @objc func resume(_ call: CAPPluginCall) {
+        self.implementation?.resume()
+        call.resolve()
+    }
+    
+    @objc func suspend(_ call: CAPPluginCall) {
+        self.implementation?.suspend()
+        call.resolve()
+    }
+}
 
-        DispatchQueue.main.async {
-            self.implementation?.alert(title: title, message: message)
-            call.resolve()
-        }
-    }
-    
-    @objc func destroy(_ call: CAPPluginCall) {
-        DispatchQueue.main.async {
-            self.implementation?.destroyKlarna()
-            call.resolve()
-        }
-    }
-    
+extension KlarnaKcoPlugin {
     private func klarnaKcoConfig(checkoutUrl: String, snippet: String) -> KlarnaKcoConfig {
         var config = KlarnaKcoConfig()
         
