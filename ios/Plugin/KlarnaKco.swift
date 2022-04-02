@@ -9,8 +9,8 @@ class KlarnaKco: NSObject {
     private let config: KlarnaKcoConfig
     private let plugin: KlarnaKcoPlugin
     private let bridge: CAPBridgeProtocol
-    private var browser: UIViewController?
     private var sdk: KlarnaHybridSDK?
+    public var browser: BrowserViewController?
     public var checkout: KCOKlarnaCheckout?
     
     init(plugin: KlarnaKcoPlugin, config: KlarnaKcoConfig) {
@@ -24,13 +24,8 @@ class KlarnaKco: NSObject {
     }
     
     func openBrowser() {
-//        if (useSnippet) {
-//            self.browser = self.checkout?.checkoutViewController
-//        } else {
-        print("Snippet \(self.config.snippet)")
-        self.browser = BrowserViewController(config: self.config, implementation: self)
-//        }
         DispatchQueue.main.async {
+            self.browser = BrowserViewController(config: self.config, implementation: self)
             self.bridge.viewController?.present(self.browser!, animated: true, completion: nil)
         }
     }
@@ -43,14 +38,21 @@ class KlarnaKco: NSObject {
         self.plugin.notifyListeners(key, data: data ?? [:])
     }
     
+    @objc func initialize() {
+        self.initKlarnaHybridSdk(self.bridge.viewController!, config: self.config, webView: self.bridge.webView)
+    }
+    
     @objc func loaded() {
         print("[Klarna Checkout] Try to notify Checkout SDK")
         self.checkout?.notifyViewDidLoad()
     }
     
-    @objc func destroy() {
+    @objc func destroyKlarna() {
+        print("[Klarna Checkout] Destroy")
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.KCOSignal, object: nil)
-        self.browser?.dismiss(animated: true, completion: self.checkout?.destroy)
+        self.browser?.dismiss(animated: true)
+        self.browser = nil
+        self.checkout?.destroy()
     }
     
     @objc func handleNotification(_ notification: Notification?) {
@@ -97,7 +99,12 @@ class KlarnaKco: NSObject {
             let url = URL(string: uri ?? "")
             if let url = url {
                 if (self.config.handleConfirmation) {
-                    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                    let request = NSMutableURLRequest(url: url as URL)
+                    request.setValue("cd91f76501174205a2e62038473380c8.access", forHTTPHeaderField: "CF-Access-Client-Id")
+                    request.setValue("8bbd2d8e06cec796c62ef1d2689ef9edd6fac318aac75e9ba5da20ea36724960", forHTTPHeaderField: "CF-Access-Client-Secret")
+                    request.httpMethod = "GET"
+                    
+                    let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
                         if let response = response {
                             print("HTTP Response \(response.debugDescription)")
                         }

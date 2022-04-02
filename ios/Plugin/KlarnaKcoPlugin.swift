@@ -17,7 +17,11 @@ public class KlarnaKcoPlugin: CAPPlugin {
         let checkoutUrl = call.getString("checkoutUrl") ?? ""
         
         self.config = self.klarnaKcoConfig(checkoutUrl: checkoutUrl, snippet: snippet)
-
+        
+        if (self.implementation?.browser?.isLoaded != nil) {
+            self.implementation?.destroyKlarna()
+        }
+        
         DispatchQueue.main.async {
             self.implementation = KlarnaKco(plugin: self, config: self.config!)
             call.resolve()
@@ -34,7 +38,7 @@ public class KlarnaKcoPlugin: CAPPlugin {
     
     @objc func destroy(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
-            self.implementation?.destroy()
+            self.implementation?.destroyKlarna()
             call.resolve()
         }
     }
@@ -77,6 +81,18 @@ public class KlarnaKcoPlugin: CAPPlugin {
         
         if let title = getConfigValue("title") as? String {
             config.title = title
+        }
+        
+        if let barColor = getConfigValue("barColor") as? String {
+            config.barColor = UIColor.capacitor.color(fromHex: barColor) ?? config.barColor
+        }
+        
+        if let barItemColor = getConfigValue("barItemColor") as? String {
+            config.barItemColor = UIColor.capacitor.color(fromHex: barItemColor) ?? config.barItemColor
+        }
+        
+        if let cancelText = getConfigValue("cancelText") as? String {
+            config.cancelText = cancelText
         }
     
         return config

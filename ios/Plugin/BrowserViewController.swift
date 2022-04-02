@@ -6,6 +6,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
     private let implementation: KlarnaKco
     private let config: KlarnaKcoConfig
     private var checkout: KCOKlarnaCheckout?
+    public var isLoaded: Bool = false
     
     lazy var webView: WKWebView = {
         let webConfiguration = WKWebViewConfiguration()
@@ -39,6 +40,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
         } else {
             setupEmbeddedKlarnaView()
         }
+        self.isLoaded = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,8 +58,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
 //        checkout.checkoutViewController.parentScrollView = self.view.scrollView
         
         self.checkout = checkout
-        
-        self.view.addSubview(checkout.checkoutViewController.view)
+        let view: UIView = checkout.checkoutViewController.view
+        self.view.addSubview(view)
     }
 
     func setupWebView() {
@@ -87,15 +89,16 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
         view.addSubview(navBar)
         
         let navItem = UINavigationItem(title: self.config.title)
-        let doneItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: #selector(cancelAction))
-        navItem.leftBarButtonItem = doneItem
+        let cancelItem = UIBarButtonItem(title: self.config.cancelText, style: .plain, target: self, action: #selector(cancelAction(sender:)))
+//        let cancelItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction(sender:)))
+        navItem.leftBarButtonItem = cancelItem
         
         navBar.setItems([navItem], animated: false)
     }
         
-    @objc func cancelAction() {
-        self.implementation.destroy()
-        dismiss(animated: true)
+    @objc func cancelAction(sender: UIBarButtonItem) {
+        print("[Klarna Checkout] Try to destroy")
+        self.implementation.destroyKlarna()
     }
 
     func loadURL(_ url: String) {
@@ -111,5 +114,12 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
     
     func checkoutViewController(_ checkoutViewController: (UIViewController & KCOCheckoutViewControllerProtocol)!, didResize size: CGSize) {
         self.view.frame.size = size
+    }
+}
+
+extension UIBarButtonItem {
+    func addTargetForAction(target: AnyObject, action: Selector) {
+        self.target = target
+        self.action = action
     }
 }
