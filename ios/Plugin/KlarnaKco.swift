@@ -56,6 +56,14 @@ class KlarnaKco: NSObject {
             self.bridge.viewController?.present(self.browser!, animated: true, completion: nil)
         }
     }
+    
+    @objc func resume() {
+        self.checkout?.resume()
+    }
+    
+    @objc func suspend() {
+        self.checkout?.suspend()
+    }
 }
 
 /**
