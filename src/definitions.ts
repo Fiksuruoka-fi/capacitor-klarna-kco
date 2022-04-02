@@ -1,14 +1,13 @@
 import type { PluginListenerHandle } from '@capacitor/core';
 
 export interface KlarnaKcoPlugin {
+  alert(options: { title: string; message: string }): Promise<void>;
   destroy(): Promise<void>;
   initialize(options: {
     checkoutUrl?: string;
     snippet?: string;
   }): Promise<void>;
   loaded(): Promise<void>;
-  deviceIdentifier(): Promise<void>;
-  setLoggingLevel(options: { value: KlarnaLoggingLevel }): Promise<void>;
 
   /**
    * Listen for when the Klarna Checkout is complete.
@@ -72,15 +71,4 @@ export interface PluginsConfig {
      */
     baritemColor?: string;
   };
-}
-
-export interface KlarnaLoggingLevel {
-  /**
-   * Configure the Klarna SDK logging level.
-   *
-   * @since 1.0.0
-   * @default native
-   * @example "verbose"
-   */
-  value: 'off' | 'error' | 'verbose';
 }

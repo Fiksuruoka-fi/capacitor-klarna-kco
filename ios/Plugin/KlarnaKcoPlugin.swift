@@ -19,12 +19,18 @@ public class KlarnaKcoPlugin: CAPPlugin {
         self.config = self.klarnaKcoConfig(checkoutUrl: checkoutUrl, snippet: snippet)
         
         if (self.implementation?.browser?.isLoaded != nil) {
-            self.implementation?.destroyKlarna()
-        }
-        
-        DispatchQueue.main.async {
-            self.implementation = KlarnaKco(plugin: self, config: self.config!)
-            call.resolve()
+            if (!snippet.isEmpty) {
+                DispatchQueue.main.async {
+                    self.implementation?.checkout?.setSnippet(snippet)
+                }
+            } else {
+                self.implementation?.destroyKlarna()
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.implementation = KlarnaKco(plugin: self, config: self.config!)
+                call.resolve()
+            }
         }
     }
     
@@ -36,29 +42,21 @@ public class KlarnaKcoPlugin: CAPPlugin {
         }
     }
     
+    @objc func alert(_ call: CAPPluginCall) {
+        let title = call.getString("title") ?? ""
+        let message = call.getString("message") ?? ""
+
+        DispatchQueue.main.async {
+            self.implementation?.alert(title: title, message: message)
+            call.resolve()
+        }
+    }
+    
     @objc func destroy(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
             self.implementation?.destroyKlarna()
             call.resolve()
         }
-    }
-    
-    @objc func deviceIdentifier(_ call: CAPPluginCall) {
-        let result = self.implementation?.deviceIdentifier()
-        call.resolve(["result": result ?? "undefined"])
-    }
-    
-    @objc func setLoggingLevel(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        
-        if value.isEmpty {
-            KlarnaMobileSDKCommon.setLoggingLevel(getConfigValue("verbose") as! KlarnaLoggingLevel)
-        } else {
-            KlarnaMobileSDKCommon.setLoggingLevel(getConfigValue(value) as! KlarnaLoggingLevel)
-        }
-
-        call.resolve()
-        
     }
     
     private func klarnaKcoConfig(checkoutUrl: String, snippet: String) -> KlarnaKcoConfig {

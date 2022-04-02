@@ -48,6 +48,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
         setupNavBar(view: self.view)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.isLoaded = false
+    }
+    
     func setupEmbeddedKlarnaView() {
         self.view.backgroundColor = .white
         
@@ -90,7 +95,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
         
         let navItem = UINavigationItem(title: self.config.title)
         let cancelItem = UIBarButtonItem(title: self.config.cancelText, style: .plain, target: self, action: #selector(cancelAction(sender:)))
-//        let cancelItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction(sender:)))
         navItem.leftBarButtonItem = cancelItem
         
         navBar.setItems([navItem], animated: false)

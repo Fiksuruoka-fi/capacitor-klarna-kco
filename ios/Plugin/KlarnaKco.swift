@@ -30,12 +30,16 @@ class KlarnaKco: NSObject {
         }
     }
     
-    @objc func deviceIdentifier() -> String {
-        return KlarnaMobileSDKCommon.deviceIdentifier()
-    }
-    
     @objc func notifyWeb(key: String, data: [String : Any]?) -> Void {
         self.plugin.notifyListeners(key, data: data ?? [:])
+    }
+    
+    @objc func alert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
+            
+        let vc = self.browser ?? self.bridge.viewController
+        vc?.present(alert, animated: true, completion: nil)
     }
     
     @objc func initialize() {
@@ -100,8 +104,6 @@ class KlarnaKco: NSObject {
             if let url = url {
                 if (self.config.handleConfirmation) {
                     let request = NSMutableURLRequest(url: url as URL)
-                    request.setValue("cd91f76501174205a2e62038473380c8.access", forHTTPHeaderField: "CF-Access-Client-Id")
-                    request.setValue("8bbd2d8e06cec796c62ef1d2689ef9edd6fac318aac75e9ba5da20ea36724960", forHTTPHeaderField: "CF-Access-Client-Secret")
                     request.httpMethod = "GET"
                     
                     let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
