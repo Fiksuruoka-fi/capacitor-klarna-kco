@@ -18,7 +18,15 @@ class KlarnaKco: NSObject {
 
         super.init()
         
-        openBrowser()
+        if (self.config.checkoutUrl.isEmpty && self.config.snippet.isEmpty) {
+           initialize()
+        } else {
+            openBrowser()
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func alert(title: String, message: String) {
@@ -30,11 +38,11 @@ class KlarnaKco: NSObject {
     }
     
     @objc func destroyKlarna() {
-        print("[Klarna Checkout] Destroy")
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.KCOSignal, object: nil)
         self.browser?.dismiss(animated: true)
         self.browser = nil
         self.checkout?.destroy()
+        self.checkout = nil
     }
     
     @objc func initialize() {
@@ -42,7 +50,6 @@ class KlarnaKco: NSObject {
     }
     
     @objc func loaded() {
-        print("[Klarna Checkout] Try to notify Checkout SDK")
         self.checkout?.notifyViewDidLoad()
     }
     
@@ -51,10 +58,8 @@ class KlarnaKco: NSObject {
     }
     
     func openBrowser() {
-        DispatchQueue.main.async {
-            self.browser = BrowserViewController(config: self.config, implementation: self)
-            self.bridge.viewController?.present(self.browser!, animated: true, completion: nil)
-        }
+        self.browser = BrowserViewController(config: self.config, implementation: self)
+        self.bridge.viewController?.present(self.browser!, animated: true, completion: nil)
     }
     
     @objc func resume() {
@@ -73,9 +78,6 @@ extension KlarnaKco {
     @objc func handleNotification(_ notification: Notification?) {
         let name = notification?.userInfo?[KCOSignalNameKey] as? String ?? ""
         let data = notification?.userInfo?[KCOSignalDataKey] as? [String : Any] ?? [:]
-        
-        print("[Klarna Checkout] Notification \(name.description), \(data.description)")
-
         if name == "complete" {
             handleCompletionUri(data["uri"] as? String)
         } else {
@@ -90,15 +92,7 @@ extension KlarnaKco {
                 if (self.config.handleConfirmation) {
                     let request = NSMutableURLRequest(url: url as URL)
                     request.httpMethod = "GET"
-                    
-                    let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
-                        if let response = response {
-                            print("HTTP Response \(response.debugDescription)")
-                        }
-                        else if let error = error {
-                            print("HTTP Request Failed \(error)")
-                        }
-                    }
+                    let task = URLSession.shared.dataTask(with: request as URLRequest)
                     task.resume()
                 }
                 
@@ -123,25 +117,20 @@ extension KlarnaKco {
         let klarnaCheckout: KCOKlarnaCheckout = KCOKlarnaCheckout(
             viewController: viewController,
             return: self.config.iosReturnUrl)
-
         klarnaCheckout.merchantHandlesValidationErrors = self.config.handleValidationErrors
-
         if (config.snippet.isEmpty) {
             klarnaCheckout.setWebView(webView)
+            klarnaCheckout.notifyViewDidLoad()
         } else {
             klarnaCheckout.setSnippet(config.snippet)
         }
-         
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleNotification),
             name: NSNotification.Name.KCOSignal,
             object: nil
         )
-
         self.checkout = klarnaCheckout
-        print("[Klarna Checkout] Checkout SDK initialized")
-
         return klarnaCheckout
     }
 }

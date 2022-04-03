@@ -55,13 +55,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
     
     func setupEmbeddedKlarnaView() {
         self.view.backgroundColor = .white
-        
         let checkout = self.implementation.initKlarnaHybridSdk(self, config: self.config, webView: nil)
-
-//        checkout.checkoutViewController.internalScrollDisabled = true
-//        checkout.checkoutViewController.sizingDelegate = self
-//        checkout.checkoutViewController.parentScrollView = self.view.scrollView
-        
         self.checkout = checkout
         let view: UIView = checkout.checkoutViewController.view
         self.view.addSubview(view)
@@ -101,7 +95,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, KCOCheckoutSizingDe
     }
         
     @objc func cancelAction(sender: UIBarButtonItem) {
-        print("[Klarna Checkout] Try to destroy")
         self.implementation.destroyKlarna()
     }
 

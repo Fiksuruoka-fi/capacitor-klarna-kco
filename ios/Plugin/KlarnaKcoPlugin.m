@@ -9,5 +9,6 @@ CAP_PLUGIN(KlarnaKcoPlugin, "KlarnaKco",
            CAP_PLUGIN_METHOD(initialize, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(loaded, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(resume, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(removeAllListeners, CAPPluginReturnNone);
            CAP_PLUGIN_METHOD(suspend, CAPPluginReturnPromise);
 )

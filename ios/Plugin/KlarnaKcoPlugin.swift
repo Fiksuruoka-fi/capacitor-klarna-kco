@@ -29,21 +29,40 @@ public class KlarnaKcoPlugin: CAPPlugin {
     }
     
     @objc func initialize(_ call: CAPPluginCall) {
-        print("[Klarna Checkout] Initialize")
         let snippet = call.getString("snippet") ?? ""
         let checkoutUrl = call.getString("checkoutUrl") ?? ""
         
         self.config = self.klarnaKcoConfig(checkoutUrl: checkoutUrl, snippet: snippet)
         
+        // Check if KCO is already opened in seperate browser window
         if (self.implementation?.browser?.isLoaded != nil) {
+            // Check if snippet was used and set it again
             if (!snippet.isEmpty) {
                 DispatchQueue.main.async {
                     self.implementation?.checkout?.setSnippet(snippet)
+                    call.resolve()
                 }
-            } else {
-                self.implementation?.destroyKlarna()
             }
-        } else {
+
+            // Otherwise set webview to SDK again
+            else {
+                DispatchQueue.main.async {
+                    self.implementation?.checkout?.setWebView(self.implementation?.browser?.webView)
+                    call.resolve()
+                }
+            }
+        }
+
+        // Otherwise check if KCO sdk is already initialized and use current viewController and set webview to SDK again
+        else if (self.implementation?.checkout != nil) {
+            DispatchQueue.main.async {
+                self.implementation?.checkout?.setWebView(self.implementation?.browser?.webView)
+                call.resolve()
+            }
+        }
+
+        // Otherwise initialize KCO SDK
+        else {
             DispatchQueue.main.async {
                 self.implementation = KlarnaKco(plugin: self, config: self.config!)
                 call.resolve()
@@ -52,7 +71,6 @@ public class KlarnaKcoPlugin: CAPPlugin {
     }
     
     @objc func loaded(_ call: CAPPluginCall) {
-        print("[Klarna Checkout] Loaded")
         DispatchQueue.main.async {
             self.implementation?.loaded()
             call.resolve()
@@ -60,13 +78,17 @@ public class KlarnaKcoPlugin: CAPPlugin {
     }
     
     @objc func resume(_ call: CAPPluginCall) {
-        self.implementation?.resume()
-        call.resolve()
+        DispatchQueue.main.async {
+            self.implementation?.resume()
+            call.resolve()
+        }
     }
     
     @objc func suspend(_ call: CAPPluginCall) {
-        self.implementation?.suspend()
-        call.resolve()
+        DispatchQueue.main.async {
+            self.implementation?.suspend()
+            call.resolve()
+        }
     }
 }
 
