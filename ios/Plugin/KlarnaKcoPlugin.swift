@@ -34,7 +34,7 @@ public class KlarnaKcoPlugin: CAPPlugin {
         
         self.config = self.klarnaKcoConfig(checkoutUrl: checkoutUrl, snippet: snippet)
         
-        // Check if KCO is already opened in seperate browser window
+        // Check if KCO is already opened in separate browser window
         if (self.implementation?.browser?.isLoaded != nil) {
             // Check if snippet was used and set it again
             if (!snippet.isEmpty) {
