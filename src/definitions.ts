@@ -262,6 +262,24 @@ export interface PluginsConfig {
    */
   KlarnaKco?: {
     /**
+     * Configure if checkout is loaded inside the App.
+     *
+     * @since 1.0.0
+     * @default true
+     * @example "app-return-url://"
+     */
+    inApp: boolean;
+
+    /**
+     * Configure the return url for Android.
+     *
+     * @since 1.0.0
+     * @default ""
+     * @example "app-return-url://"
+     */
+    androidReturnUrl?: string;
+
+    /**
      * Configure the return url for the iOS.
      *
      * @since 1.0.0

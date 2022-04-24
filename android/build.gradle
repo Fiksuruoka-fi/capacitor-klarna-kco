@@ -4,8 +4,8 @@ ext {
     androidxJunitVersion = project.hasProperty('androidxJunitVersion') ? rootProject.ext.androidxJunitVersion : '1.1.2'
     androidxEspressoCoreVersion = project.hasProperty('androidxEspressoCoreVersion') ? rootProject.ext.androidxEspressoCoreVersion : '3.3.0'
     klarnaSdkVersion = project.hasProperty('klarnaSdkVersion') ? rootProject.ext.klarnaSdkVersion : '1.7.1'
-    klarnaSdkScheme = project.hasProperty('klarnaSdkScheme') ? rootProject.ext.klarnaSdkScheme : '<your-custom-scheme>'
-    klarnaSdkHost = project.hasProperty('klarnaSdkHost') ? rootProject.ext.klarnaSdkHost : '<your-custom-host>'
+    klarnaSdkScheme = project.hasProperty('klarnaSdkScheme') ? rootProject.ext.klarnaSdkScheme : 'capacitor-klarna-kco'
+    klarnaSdkHost = project.hasProperty('klarnaSdkHost') ? rootProject.ext.klarnaSdkHost : 'checkout'
 }
 
 buildscript {

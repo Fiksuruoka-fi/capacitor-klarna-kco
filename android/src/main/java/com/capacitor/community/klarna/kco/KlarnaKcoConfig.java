@@ -1,29 +1,51 @@
 package com.capacitor.community.klarna.kco;
+import android.content.Context;
 import android.graphics.Color;
 
 import com.getcapacitor.Plugin;
 
-public class KlarnaKcoConfig extends Plugin {
-    private final String androidReturnUrl = getConfig().getString("androidReturnUrl", "");
-    private final Boolean handleConfirmation = getConfig().getBoolean("handleConfirmation", false);
-    private final Boolean handleValidationErrors = getConfig().getBoolean("handleValidationErrors", false);
+public class KlarnaKcoConfig {
+    private String androidReturnUrl = "";
+    private Boolean inApp = false;
+    private Boolean handleConfirmation = false;
+    private Boolean handleValidationErrors = false;
     private String checkoutUrl = "";
     private String snippet = "";
-    private final String title = getConfig().getString("title", "");
-    private final int barColor = Color.parseColor(getConfig().getString("barColor", "white"));
-    private final int barItemColor = Color.parseColor(getConfig().getString("barItemColor", "red"));
-    private final String cancelText = getConfig().getString("cancelText", this.bridge.getContext().getString(R.string.cancel));
+    private String title = "";
+    private String barColor =  "white";
+    private String barItemColor = "red";
+    private String cancelText = "Cancel";
+
+    public Boolean getInApp() {
+        return inApp;
+    }
+
+    public void setInApp(Boolean inApp) {
+        this.inApp = inApp;
+    }
 
     public String getAndroidReturnUrl() {
         return androidReturnUrl;
+    }
+
+    public void setAndroidReturnUrl(String androidReturnUrl) {
+        this.androidReturnUrl = androidReturnUrl;
     }
 
     public Boolean getHandleConfirmation() {
         return handleConfirmation;
     }
 
+    public void setHandleConfirmation(Boolean handleConfirmation) {
+        this.handleConfirmation = handleConfirmation;
+    }
+
     public Boolean getHandleValidationErrors() {
         return handleValidationErrors;
+    }
+
+    public void setHandleValidationErrors(Boolean handleValidationErrors) {
+        this.handleValidationErrors = handleValidationErrors;
     }
 
     public String getCheckoutUrl() {
@@ -46,15 +68,31 @@ public class KlarnaKcoConfig extends Plugin {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public int getBarColor() {
-        return barColor;
+        return Color.parseColor(barColor);
+    }
+
+    public void setBarColor(String barColor) {
+        this.barColor = barColor;
     }
 
     public int getBarItemColor() {
-        return barItemColor;
+        return Color.parseColor(barItemColor);
+    }
+
+    public void setBarItemColor(String barItemColor) {
+        this.barItemColor = barItemColor;
     }
 
     public String getCancelText() {
         return cancelText;
+    }
+
+    public void setCancelText(String cancelText) {
+        this.cancelText = cancelText;
     }
 }

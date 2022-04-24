@@ -4,29 +4,20 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.getcapacitor.JSObject;
-import com.getcapacitor.Plugin;
 import com.klarna.checkout.KlarnaCheckout;
 import com.klarna.checkout.SignalListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-public class KlarnaKco extends Plugin {
-    private KlarnaKcoConfig config;
-    private KlarnaKcoPlugin plugin;
-    public BrowserActivity browser;
-    public KlarnaCheckout checkout;
+public class KlarnaKco {
+    private final KlarnaKcoConfig config;
+    private final KlarnaKcoPlugin plugin;
+    public BrowserActivity browser = null;
+    public KlarnaCheckout checkout = null;
 
     public KlarnaKco(KlarnaKcoConfig config, KlarnaKcoPlugin plugin) {
         this.config = config;
@@ -40,7 +31,7 @@ public class KlarnaKco extends Plugin {
     }
 
     public void alert(String title, String message) {
-        Activity activity = this.browser != null ? this.browser : this.bridge.getActivity();
+        Activity activity = browser != null ? browser : plugin.getBridge().getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title).setMessage(message).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -52,98 +43,65 @@ public class KlarnaKco extends Plugin {
     }
 
     public void destroyKlarna() {
-        if (this.browser != null) {
-            this.browser.close();
-            this.browser = null;
+        if (browser != null) {
+            browser.close();
+            browser = null;
         }
-        this.checkout.destroy();
-        this.checkout = null;
+        checkout.destroy();
+        checkout = null;
     }
 
     public void initialize() {
-        initKlarnaCheckout(bridge.getActivity(), bridge.getWebView());
-    }
+        if (checkout != null) return;
+        final Activity activity = plugin.getActivity();
+        final WebView webView = plugin.getBridge().getWebView();
+        this.checkout = initKlarnaCheckout(activity, webView, config.getAndroidReturnUrl(), "");
 
-    public void notifyWeb(String key, JSObject data) {
-        notifyListeners(key, data);
+        this.checkout.setSignalListener(new SignalListener() {
+            @Override
+            public void onSignal(String eventName, JSONObject jsonObject) {
+                try {
+                    JSObject ret = JSObject.fromJSONObject(jsonObject);
+                    notifyWeb(eventName, ret);
+                } catch (JSONException e) {
+                    Log.e(e.getMessage(), e.toString());
+                }
+            }
+        });
     }
 
     public void openBrowser() {
-        this.browser = new BrowserActivity(this, this.config);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        this.browser.startActivity(intent);
+        Intent intent = new Intent(plugin.getContext(), BrowserActivity.class);
+        intent.putExtra("returnUrl", config.getAndroidReturnUrl());
+        intent.putExtra("snippet", config.getSnippet());
+        intent.putExtra("checkoutUrl", config.getCheckoutUrl());
+        plugin.getContext().startActivity(intent);
     }
 
     public void resume() {
-        this.checkout.resume();
+        checkout.resume();
     }
 
     public void suspend() {
-        this.checkout.suspend();
+        checkout.suspend();
+    }
+
+    public void notifyWeb(String key, JSObject data) {
+        plugin.handleListeners(key, data);
     }
 
     /**
      * Initialize KCO SDK with settings and preferences
      */
-    protected void initKlarnaCheckout(Activity activity, WebView webView) {
+    public static KlarnaCheckout initKlarnaCheckout(Activity activity, WebView webView, String returnUrl, String snippet) {
         //Attach Activity and WebView to checkout
-        final KlarnaCheckout checkout = new KlarnaCheckout(activity, this.config.getAndroidReturnUrl());
-
-        if (this.config.getSnippet().isEmpty()) {
+        final KlarnaCheckout checkout = new KlarnaCheckout(activity, returnUrl);
+        if (snippet.isEmpty()) {
             checkout.setWebView(webView);
-            checkout.notify();
         } else {
-            checkout.setSnippet(this.config.getSnippet());
+            checkout.setSnippet(snippet);
         }
 
-        //Attach the listener to handle event messages from checkout.
-        checkout.setSignalListener(this::handleNotification);
-        this.checkout = checkout;
-    }
-
-    /**
-     * Handle Klarna events
-     */
-    protected void handleNotification(String eventName, JSONObject jsonObject) {
-        if (eventName.equals("complete")) {
-            try {
-                handleCompletionUri(jsonObject.getString("uri"));
-            } catch (JSONException e) {
-                Log.e(e.getMessage(), e.toString());
-            }
-        } else {
-            try {
-                JSObject ret = JSObject.fromJSONObject(jsonObject);
-                notifyWeb(eventName, ret);
-            } catch (JSONException e) {
-                Log.e(e.getMessage(), e.toString());
-            }
-        }
-    }
-
-    protected void handleCompletionUri(String uri) {
-        try {
-            URL url = new URL(uri);
-            if (config.getHandleConfirmation()) {
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                try {
-                    new BufferedInputStream(urlConnection.getInputStream());
-                } finally {
-                urlConnection.disconnect();
-                }
-            }
-            JSObject ret = new JSObject();
-            ret.put("url", uri);
-            ret.put("path", url.getPath());
-            notifyWeb("complete", ret);
-        } catch (IOException e) {
-            Log.e(e.getMessage(), e.toString());
-        }
-    }
-
-    @Override
-    protected void handleOnDestroy() {
-        destroyKlarna();
-        super.handleOnDestroy();
+        return checkout;
     }
 }
