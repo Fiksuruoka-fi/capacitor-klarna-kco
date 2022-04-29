@@ -6,52 +6,117 @@
     "tags": [],
     "methods": [
       {
-        "name": "viewDidLoad",
-        "signature": "() => Promise<void>",
-        "parameters": [],
-        "returns": "Promise<void>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "viewdidload"
-      },
-      {
         "name": "destroy",
         "signature": "() => Promise<void>",
         "parameters": [],
         "returns": "Promise<void>",
-        "tags": [],
-        "docs": "",
+        "tags": [
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "example",
+            "text": [
+              {
+                "text": "```js\n await KlarnaKco.destroy()\n```",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Destroy Klarna SDK",
         "complexTypes": [],
         "slug": "destroy"
       },
       {
-        "name": "deviceIdentifier",
+        "name": "resume",
         "signature": "() => Promise<void>",
         "parameters": [],
         "returns": "Promise<void>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "deviceidentifier"
-      },
-      {
-        "name": "setLoggingLevel",
-        "signature": "(options: { value: KlarnaLoggingLevel; }) => Promise<void>",
-        "parameters": [
+        "tags": [
           {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: KlarnaLoggingLevel; }"
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/in-app/checkout-sdk/checkout-ios-overview/adding-klarna-checkout-sdk-to-your-app-native-integration/#suspend-and-resume-checkout",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "example",
+            "text": [
+              {
+                "text": "```js\n await KlarnaKco.resume()\n```",
+                "kind": "text"
+              }
+            ]
           }
         ],
+        "docs": "Resume interactions on Klarna Checkout widget",
+        "complexTypes": [],
+        "slug": "resume"
+      },
+      {
+        "name": "suspend",
+        "signature": "() => Promise<void>",
+        "parameters": [],
         "returns": "Promise<void>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [
-          "KlarnaLoggingLevel"
+        "tags": [
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/in-app/checkout-sdk/checkout-ios-overview/adding-klarna-checkout-sdk-to-your-app-native-integration/#suspend-and-resume-checkout",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "example",
+            "text": [
+              {
+                "text": "```js\n await KlarnaKco.suspend()\n```",
+                "kind": "text"
+              }
+            ]
+          }
         ],
-        "slug": "setlogginglevel"
+        "docs": "Suspend interactions on Klarna Checkout widget",
+        "complexTypes": [],
+        "slug": "suspend"
       },
       {
         "name": "addListener",
@@ -80,8 +145,572 @@
             ]
           }
         ],
-        "docs": "Listen for when the Klarna Checkout is complete.",
+        "docs": "Listen for when the payment created.",
         "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'load', listenerFunc: (data: EventData['load']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"load\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { customer: { type: string; }; shipping_address: { country: string; postal_code: string; }; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the KCO iframe has been created successfully.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'user_interacted', listenerFunc: (data: EventData['user_interacted']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"user_interacted\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { type: string; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the user has interacted with the KCO iframe.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'customer', listenerFunc: (data: EventData['customer']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"customer\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { type: string; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the user has interacted with the KCO iframe.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'change', listenerFunc: (data: EventData['change']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"change\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { email: string; postal_code: string; country: string; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when organization type (B2B or Person) was changed.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'billing_address_change', listenerFunc: (data: EventData['billing_address_change']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"billing_address_change\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { postal_code: string; country: string; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when postal code, country or email was changed.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'shipping_address_change', listenerFunc: (data: EventData['shipping_address_change']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"shipping_address_change\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { postal_code: string; country: string; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when shipping address was submitted.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'shipping_option_changed', listenerFunc: (data: EventData['shipping_option_changed']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"shipping_option_changed\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { description: string; id: string; name: string; price: number; promo: string; tax_amount: number; tax_rate: number; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the user has selected a new shipping option.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'order_total_change', listenerFunc: (data: EventData['order_total_change']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"order_total_change\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { order_total: number; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when we got changes on the cart from the merchant.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'checkbox_change', listenerFunc: (data: EventData['checkbox_change']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"checkbox_change\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: { key: string; checked: boolean; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when a checkbox was checked/unchecked.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'network_error', listenerFunc: (data: EventData['network_error']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"network_error\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: {}) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for network error in KCO iframe.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'redirect_initiated', listenerFunc: (data: EventData['redirect_initiated']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"redirect_initiated\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: true) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the user is about to be redirected to the confirmation page.",
+        "complexTypes": [
+          "EventData",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'load_confirmation', listenerFunc: (data: EventData['load_confirmation']) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"load_confirmation\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: {}) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [
+          {
+            "name": "see",
+            "text": [
+              {
+                "text": "https",
+                "kind": "text"
+              },
+              {
+                "text": "://docs.klarna.com/klarna-checkout/in-depth-knowledge/analytics/",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "since",
+            "text": [
+              {
+                "text": "1.0.0",
+                "kind": "text"
+              }
+            ]
+          }
+        ],
+        "docs": "Listen for when the confirmation iframe has been created succesfully.",
+        "complexTypes": [
+          "EventData",
           "PluginListenerHandle"
         ],
         "slug": "addlistener"
@@ -90,50 +719,6 @@
     "properties": []
   },
   "interfaces": [
-    {
-      "name": "KlarnaLoggingLevel",
-      "slug": "klarnalogginglevel",
-      "docs": "",
-      "tags": [],
-      "methods": [],
-      "properties": [
-        {
-          "name": "value",
-          "tags": [
-            {
-              "text": [
-                {
-                  "text": "1.0.0",
-                  "kind": "text"
-                }
-              ],
-              "name": "since"
-            },
-            {
-              "text": [
-                {
-                  "text": "native",
-                  "kind": "text"
-                }
-              ],
-              "name": "default"
-            },
-            {
-              "text": [
-                {
-                  "text": "\"verbose\"",
-                  "kind": "text"
-                }
-              ],
-              "name": "example"
-            }
-          ],
-          "docs": "Configure the Klarna SDK logging level.",
-          "complexTypes": [],
-          "type": "\"error\" | \"off\" | \"verbose\""
-        }
-      ]
-    },
     {
       "name": "PluginListenerHandle",
       "slug": "pluginlistenerhandle",
@@ -147,6 +732,108 @@
           "docs": "",
           "complexTypes": [],
           "type": "() => Promise<void>"
+        }
+      ]
+    },
+    {
+      "name": "EventData",
+      "slug": "eventdata",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "load",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "EventData"
+          ],
+          "type": "{ customer: { type: string; }; shipping_address: { country: string; postal_code: string; }; }"
+        },
+        {
+          "name": "user_interacted",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ type: string; }"
+        },
+        {
+          "name": "customer",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ type: string; }"
+        },
+        {
+          "name": "change",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ email: string; postal_code: string; country: string; }"
+        },
+        {
+          "name": "billing_address_change",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ postal_code: string; country: string; }"
+        },
+        {
+          "name": "shipping_address_change",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ postal_code: string; country: string; }"
+        },
+        {
+          "name": "shipping_option_changed",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ description: string; id: string; name: string; price: number; promo: string; tax_amount: number; tax_rate: number; }"
+        },
+        {
+          "name": "shipping_address_update_error",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{}"
+        },
+        {
+          "name": "order_total_change",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ order_total: number; }"
+        },
+        {
+          "name": "checkbox_change",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ key: string; checked: boolean; }"
+        },
+        {
+          "name": "network_error",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{}"
+        },
+        {
+          "name": "redirect_initiated",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "true"
+        },
+        {
+          "name": "load_confirmation",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{}"
         }
       ]
     }
