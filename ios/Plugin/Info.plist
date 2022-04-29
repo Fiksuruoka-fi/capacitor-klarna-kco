@@ -33,8 +33,6 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSPrincipalClass</key>
 	<string></string>
-	<key>NSCameraUsageDescription</key>
-	<string>This application needs access to the camera for scan credit card.</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>klarna</string>
