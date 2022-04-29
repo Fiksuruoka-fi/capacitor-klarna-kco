@@ -19,7 +19,7 @@ npx cap sync
 ---
 
 ## Setup
-**Reguired:** Include configuration to `capacitor.config.json`
+**Required:** Include configuration to `capacitor.config.json`
 
 ```json
 {
