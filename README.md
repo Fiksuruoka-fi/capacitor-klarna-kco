@@ -75,7 +75,7 @@ The hosting Activity should be using launchMode of singleTask or singleTop to pr
 ## Usage
 Import plugin to your application
 ```js
-import { KlarnaKco } from "@capacitor-community/klarna-kco";
+import { KlarnaKco } from "@foodello/capacitor-klarna-kco";
 ```
 
 Remember to attach listeners to the events you are willing to handle. For example in order to perform navigation inside your application, listen `complete` -event:
