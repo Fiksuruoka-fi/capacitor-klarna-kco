@@ -1,8 +1,16 @@
-# @capacitor-community/klarna-kco
+# Capacitor Klarna Checkout
 Klarna Checkout integration to Capacitor.js for loading Checkout widget inside Capacitor app.
 
 ## Installation
-Sync native files:
+```bash
+yarn add @foodello/capacitor-klarna-kco
+
+or
+
+npm install @foodello/capacitor-klarna-kco
+```
+
+Then run
 
 ```bash
 npx cap sync

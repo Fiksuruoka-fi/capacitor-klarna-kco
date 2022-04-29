@@ -273,14 +273,12 @@
 				"${PODS_ROOT}/Target Support Files/Pods-PluginTests/Pods-PluginTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Capacitor/Capacitor.framework",
 				"${BUILT_PRODUCTS_DIR}/CapacitorCordova/Cordova.framework",
-				"${PODS_ROOT}/KlarnaMobileSDK/ios/full/xcode-12.3-fat/KlarnaMobileSDK.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/KlarnaCheckoutSDK/xcframework/KlarnaCheckoutSDK.framework/KlarnaCheckoutSDK",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Capacitor.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cordova.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KlarnaMobileSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KlarnaCheckoutSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
