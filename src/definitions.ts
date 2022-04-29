@@ -2,17 +2,6 @@ import type { PluginListenerHandle } from '@capacitor/core';
 
 export interface KlarnaKcoPlugin {
   /**
-   * Show native alert
-   * @since 1.0.0
-   * @param options - Alert options
-   * @example
-   * ```js
-   *  await KlarnaKco.alert({ title: "Example", message: "Example message" })
-   * ```
-   */
-  alert(options: AlertOptions): Promise<void>;
-
-  /**
    * Destroy Klarna SDK
    * @since 1.0.0
    * @example
@@ -21,29 +10,6 @@ export interface KlarnaKcoPlugin {
    * ```
    */
   destroy(): Promise<void>;
-
-  /**
-   * Initialize Klarna SDK
-   * @since 1.0.0
-   * @params options - Options to initialize Klarna SDK with
-   * @property options.checkoutUrl - When opening external web page set url where the webview will navigate
-   * @property options.snippet - When opening only Klarna Checkout in webview set checkout snippet
-   * @example
-   * ```js
-   *  await KlarnaKco.initialize({ checkoutUrl: "https://your-page.com/checkout" })
-   * ```
-   */
-  initialize(options: InitializeOptions): Promise<void>;
-
-  /**
-   * Notify Klarna SDK that the page with Checkout widget has been loaded
-   * @since 1.0.0
-   * @example
-   * ```js
-   *  await KlarnaKco.loaded()
-   * ```
-   */
-  loaded(): Promise<void>;
 
   /**
    * Resume interactions on Klarna Checkout widget
@@ -262,15 +228,6 @@ export interface PluginsConfig {
    */
   KlarnaKco?: {
     /**
-     * Configure if checkout is loaded inside the App.
-     *
-     * @since 1.0.0
-     * @default true
-     * @example "app-return-url://"
-     */
-    inApp: boolean;
-
-    /**
      * Configure the return url for Android.
      *
      * @since 1.0.0
@@ -289,16 +246,6 @@ export interface PluginsConfig {
     iosReturnUrl?: string;
 
     /**
-     * Set true if willing to send GET request to confirm url when checkout is completed.
-     * This requires you to handle checkout view redirect to completed page in js.
-     *
-     * @since 1.0.0
-     * @default false
-     * @example false
-     */
-    handleConfirmation?: boolean;
-
-    /**
      * Set true if willing to handle validation errors in your application
      *
      * @since 1.0.0
@@ -306,23 +253,5 @@ export interface PluginsConfig {
      * @example false
      */
     handleValidationErrors?: boolean;
-
-    /**
-     * Set true if willing to handle validation errors in your application
-     *
-     * @since 1.0.0
-     * @default #ffffff
-     * @example false
-     */
-    barColor?: string;
-
-    /**
-     * Set true if willing to handle validation errors in your application
-     *
-     * @since 1.0.0
-     * @default #ff3b30
-     * @example false
-     */
-    baritemColor?: string;
   };
 }
