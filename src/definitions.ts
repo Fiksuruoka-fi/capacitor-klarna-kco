@@ -38,8 +38,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'complete',
-    listenerFunc: (data: { url: string }) => void,
+    eventName: EventsEnum.Complete,
+    listenerFunc: (data: EventData[EventsEnum.Complete]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -48,8 +48,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'load',
-    listenerFunc: (data: EventData['load']) => void,
+    eventName: EventsEnum.Load,
+    listenerFunc: (data: EventData[EventsEnum.Load]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -58,8 +58,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'user_interacted',
-    listenerFunc: (data: EventData['user_interacted']) => void,
+    eventName: EventsEnum.UserInteracted,
+    listenerFunc: (data: EventData[EventsEnum.UserInteracted]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -68,8 +68,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'customer',
-    listenerFunc: (data: EventData['customer']) => void,
+    eventName: EventsEnum.Customer,
+    listenerFunc: (data: EventData[EventsEnum.Customer]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -78,8 +78,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'change',
-    listenerFunc: (data: EventData['change']) => void,
+    eventName: EventsEnum.Change,
+    listenerFunc: (data: EventData[EventsEnum.Change]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -88,8 +88,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'billing_address_change',
-    listenerFunc: (data: EventData['billing_address_change']) => void,
+    eventName: EventsEnum.BillingAddressChange,
+    listenerFunc: (data: EventData[EventsEnum.BillingAddressChange]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -98,8 +98,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'shipping_address_change',
-    listenerFunc: (data: EventData['shipping_address_change']) => void,
+    eventName: EventsEnum.ShippingAddressChange,
+    listenerFunc: (data: EventData[EventsEnum.ShippingAddressChange]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -108,8 +108,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'shipping_option_changed',
-    listenerFunc: (data: EventData['shipping_option_changed']) => void,
+    eventName: EventsEnum.ShippingOptionChanged,
+    listenerFunc: (data: EventData[EventsEnum.ShippingOptionChanged]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -118,8 +118,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'order_total_change',
-    listenerFunc: (data: EventData['order_total_change']) => void,
+    eventName: EventsEnum.OrderTotalChange,
+    listenerFunc: (data: EventData[EventsEnum.OrderTotalChange]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -128,8 +128,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'checkbox_change',
-    listenerFunc: (data: EventData['checkbox_change']) => void,
+    eventName: EventsEnum.CheckboxChange,
+    listenerFunc: (data: EventData[EventsEnum.CheckboxChange]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -138,8 +138,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'network_error',
-    listenerFunc: (data: EventData['network_error']) => void,
+    eventName: EventsEnum.NetworkError,
+    listenerFunc: (data: EventData[EventsEnum.NetworkError]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -148,8 +148,8 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'redirect_initiated',
-    listenerFunc: (data: EventData['redirect_initiated']) => void,
+    eventName: EventsEnum.RedirectInitiated,
+    listenerFunc: (data: EventData[EventsEnum.RedirectInitiated]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   /**
@@ -158,68 +158,9 @@ export interface KlarnaKcoPlugin {
    * @since 1.0.0
    */
   addListener(
-    eventName: 'load_confirmation',
-    listenerFunc: (data: EventData['load_confirmation']) => void,
+    eventName: EventsEnum.LoadConfirmation,
+    listenerFunc: (data: EventData[EventsEnum.LoadConfirmation]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
-}
-
-export interface InitializeOptions {
-  checkoutUrl?: string;
-  snippet?: string;
-}
-
-export interface AlertOptions {
-  title: string;
-  message: string;
-}
-
-export interface EventData {
-  load: {
-    customer: EventData['customer'];
-    shipping_address: {
-      country: string;
-      postal_code: string;
-    };
-  };
-  user_interacted: {
-    type: string;
-  };
-  customer: {
-    type: string;
-  };
-  change: {
-    email: string;
-    postal_code: string;
-    country: string;
-  };
-  billing_address_change: {
-    postal_code: string;
-    country: string;
-  };
-  shipping_address_change: {
-    postal_code: string;
-    country: string;
-  };
-  shipping_option_changed: {
-    description: string;
-    id: string;
-    name: string;
-    price: number;
-    promo: string;
-    tax_amount: number;
-    tax_rate: number;
-  };
-  shipping_address_update_error: {};
-  order_total_change: {
-    order_total: number;
-  };
-  checkbox_change: {
-    key: string;
-    checked: boolean;
-  };
-  network_error: {};
-  redirect_initiated: true;
-  load_confirmation: {};
 }
 
 export interface PluginsConfig {
@@ -254,4 +195,73 @@ export interface PluginsConfig {
      */
     handleValidationErrors?: boolean;
   };
+}
+
+export interface EventData {
+  [EventsEnum.Complete]: {
+    url: string;
+  };
+  [EventsEnum.Load]: {
+    customer: EventData[EventsEnum.Customer];
+    shipping_address: {
+      country: string;
+      postal_code: string;
+    };
+  };
+  [EventsEnum.UserInteracted]: {
+    type: string;
+  };
+  [EventsEnum.Customer]: {
+    type: string;
+  };
+  [EventsEnum.Change]: {
+    email: string;
+    postal_code: string;
+    country: string;
+  };
+  [EventsEnum.BillingAddressChange]: {
+    postal_code: string;
+    country: string;
+  };
+  [EventsEnum.ShippingAddressChange]: {
+    postal_code: string;
+    country: string;
+  };
+  [EventsEnum.ShippingOptionChanged]: {
+    description: string;
+    id: string;
+    name: string;
+    price: number;
+    promo: string;
+    tax_amount: number;
+    tax_rate: number;
+  };
+  [EventsEnum.ShippingAddressUpdateError]: Record<string, never>;
+  [EventsEnum.OrderTotalChange]: {
+    order_total: number;
+  };
+  [EventsEnum.CheckboxChange]: {
+    key: string;
+    checked: boolean;
+  };
+  [EventsEnum.NetworkError]: Record<string, never>;
+  [EventsEnum.RedirectInitiated]: true;
+  [EventsEnum.LoadConfirmation]: Record<string, never>;
+}
+
+export enum EventsEnum {
+  Complete = 'complete',
+  Load = 'load',
+  UserInteracted = 'user_interacted',
+  Customer = 'customer',
+  Change = 'change',
+  BillingAddressChange = 'billing_address_change',
+  ShippingAddressChange = 'shipping_address_change',
+  ShippingOptionChanged = 'shipping_option_changed',
+  ShippingAddressUpdateError = 'shipping_address_update_error',
+  OrderTotalChange = 'order_total_change',
+  CheckboxChange = 'checkbox_change',
+  NetworkError = 'network_error',
+  RedirectInitiated = 'redirect_initiated',
+  LoadConfirmation = 'load_confirmation',
 }
