@@ -232,6 +232,15 @@ export interface KlarnaKcoPlugin {
     eventName: EventsEnum.LoadConfirmation,
     listenerFunc: (data: EventData[EventsEnum.LoadConfirmation]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
+
+  /**
+   * Listen for when the external payment method is set.
+   * @since 1.0.0
+   */
+  addListener(
+    eventName: EventsEnum.External,
+    listenerFunc: (data: EventData[EventsEnum.External]) => void,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
 
 export interface SetSnippetOptions {
@@ -298,7 +307,7 @@ export interface PluginsConfig {
     /**
      * Set true if willing to handle validation external payment methods in your application
      *
-     * @since 2.0.0
+     * @since 1.0.5
      * @default false
      * @example false
      */
