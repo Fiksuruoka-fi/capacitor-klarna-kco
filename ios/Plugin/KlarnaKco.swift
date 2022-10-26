@@ -57,6 +57,8 @@ extension KlarnaKco {
         let data = notification?.userInfo?[KCOSignalDataKey] as? [String : Any] ?? [:]
         if name == "complete" {
             handleCompletionUri(data["uri"] as? String)
+        } else if name == "external" {
+            handleEPM(data["uri"] as? String)
         } else {
             self.notifyWeb(key: name, data: data)
         }
@@ -67,6 +69,18 @@ extension KlarnaKco {
             let url = URL(string: uri ?? "")
             if let url = url {
                 self.notifyWeb(key: "complete", data: [
+                    "url": url.absoluteString,
+                    "path" : url.path
+                ])
+            }
+        }
+    }
+    
+    func handleEPM(_ uri: String?) {
+        if uri != nil && (uri != nil) && (uri?.count ?? 0) > 0 {
+            let url = URL(string: uri ?? "")
+            if let url = url {
+                self.notifyWeb(key: "external", data: [
                     "url": url.absoluteString,
                     "path" : url.path
                 ])
@@ -85,6 +99,7 @@ extension KlarnaKco {
             return: self.config.iosReturnUrl)
             
         klarnaCheckout.merchantHandlesValidationErrors = self.config.handleValidationErrors
+        klarnaCheckout.merchantHandlesEpm = self.config.handleEPM
         klarnaCheckout.setWebView(webView)
         klarnaCheckout.notifyViewDidLoad()
 

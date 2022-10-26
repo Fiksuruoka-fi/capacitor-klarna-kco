@@ -50,6 +50,10 @@ extension KlarnaKcoPlugin {
         if let handleValidationErrors = getConfigValue("handleValidationErrors") as? Bool {
             config.handleValidationErrors = handleValidationErrors
         }
+
+        if let handleEPM = getConfigValue("handleEPM") as? Bool {
+            config.handleEPM = handleEPM
+        }
     
         return config
     }
