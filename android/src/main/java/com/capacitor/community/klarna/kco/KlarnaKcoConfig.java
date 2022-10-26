@@ -7,6 +7,7 @@ import com.getcapacitor.Plugin;
 public class KlarnaKcoConfig {
     private String androidReturnUrl = "";
     private Boolean handleValidationErrors = false;
+    private Boolean handleEPM = false;
 
     public String getAndroidReturnUrl() {
         return androidReturnUrl;
@@ -20,7 +21,15 @@ public class KlarnaKcoConfig {
         return handleValidationErrors;
     }
 
+    public Boolean getHandleEPM() {
+        return handleEPM;
+    }
+
     public void setHandleValidationErrors(Boolean handleValidationErrors) {
         this.handleValidationErrors = handleValidationErrors;
+    }
+
+    public void setHandleEPM(Boolean handleEPM) {
+        this.handleEPM = handleEPM;
     }
 }
