@@ -548,7 +548,7 @@ Listen for when the confirmation iframe has been created succesfully.
 | **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 
-#### EventData
+### Enums
 
 | Prop                                          | Type                                                                                                                                |
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
