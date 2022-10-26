@@ -307,7 +307,7 @@ export interface PluginsConfig {
     /**
      * Set true if willing to handle validation external payment methods in your application
      *
-     * @since 2.0.0
+     * @since 1.0.5
      * @default false
      * @example false
      */
