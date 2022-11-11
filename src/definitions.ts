@@ -161,6 +161,15 @@ export interface KlarnaKcoPlugin {
     eventName: EventsEnum.LoadConfirmation,
     listenerFunc: (data: EventData[EventsEnum.LoadConfirmation]) => void,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
+
+  /**
+   * Listen for when the external payment method is set.
+   * @since 1.0.0
+   */
+  addListener(
+    eventName: EventsEnum.External,
+    listenerFunc: (data: EventData[EventsEnum.External]) => void,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
 
 export interface PluginsConfig {
@@ -194,12 +203,22 @@ export interface PluginsConfig {
      * @example false
      */
     handleValidationErrors?: boolean;
+
+    /**
+     * Set true if willing to handle external payment methods on your own
+     *
+     * @since 1.0.5
+     * @default false
+     * @example false
+     */
+    handleEPM?: boolean;
   };
 }
 
 export interface EventData {
   [EventsEnum.Complete]: {
     url: string;
+    path: string;
   };
   [EventsEnum.Load]: {
     customer: EventData[EventsEnum.Customer];
@@ -247,6 +266,10 @@ export interface EventData {
   [EventsEnum.NetworkError]: Record<string, never>;
   [EventsEnum.RedirectInitiated]: true;
   [EventsEnum.LoadConfirmation]: Record<string, never>;
+  [EventsEnum.External]: {
+    url: string;
+    path: string;
+  };
 }
 
 export enum EventsEnum {
@@ -264,4 +287,5 @@ export enum EventsEnum {
   NetworkError = 'network_error',
   RedirectInitiated = 'redirect_initiated',
   LoadConfirmation = 'load_confirmation',
+  External = 'external',
 }

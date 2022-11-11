@@ -8,6 +8,8 @@ import com.klarna.checkout.KlarnaCheckout;
 
 import org.json.JSONException;
 
+import java.net.MalformedURLException;
+
 public class KlarnaKco {
     private final KlarnaKcoConfig config;
     private final KlarnaKcoPlugin plugin;
@@ -28,7 +30,7 @@ public class KlarnaKco {
         if (checkout != null) return;
         final Activity activity = plugin.getActivity();
         final WebView webView = plugin.getBridge().getWebView();
-        checkout = initKlarnaCheckout(activity, webView, config.getAndroidReturnUrl());
+        checkout = initKlarnaCheckout(activity, webView, config);
     }
 
     public void resume() {
@@ -39,21 +41,23 @@ public class KlarnaKco {
         checkout.suspend();
     }
 
-    public void notifyWeb(String key, JSObject data) {
+    public void notifyWeb(String key, JSObject data) throws MalformedURLException {
         plugin.handleListeners(key, data);
     }
 
     /**
      * Initialize KCO SDK with settings and preferences
      */
-    public KlarnaCheckout initKlarnaCheckout(Activity activity, WebView webView, String returnUrl) {
-        final KlarnaCheckout checkout = new KlarnaCheckout(activity, returnUrl);
+    public KlarnaCheckout initKlarnaCheckout(Activity activity, WebView webView, KlarnaKcoConfig config) {
+        final KlarnaCheckout checkout = new KlarnaCheckout(activity, config.getAndroidReturnUrl());
+        checkout.setMerchantHandlesValidationErrors(config.getHandleValidationErrors());
+        checkout.setMerchantHandlesEpm(config.getHandleEPM());
         checkout.setWebView(webView);
         checkout.setSignalListener((eventName, jsonObject) -> {
             try {
                 JSObject ret = JSObject.fromJSONObject(jsonObject);
                 this.notifyWeb(eventName, ret);
-            } catch (JSONException e) {
+            } catch (JSONException | MalformedURLException e) {
                 Log.e(e.getMessage(), e.toString());
             }
         });
