@@ -3,11 +3,13 @@ import Capacitor
 import os
 import UIKit
 import KlarnaMobileSDK
+import NotificationBannerSwift
 
 class KlarnaKco: NSObject {
     private let config: KlarnaKcoConfig
     private let bridge: CAPBridgeProtocol
     private let plugin: KlarnaKcoPlugin
+    private var banner: FloatingNotificationBanner?
     public var opened = false
     public var checkout: KlarnaCheckoutView?
     public var checkoutViewController: KlarnaKcoViewController?

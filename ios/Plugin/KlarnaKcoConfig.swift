@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import KlarnaMobileSDK
+import NotificationBannerSwift
 
 public struct KlarnaKcoConfig {
     var iosReturnUrl = URL.init(string: "")
