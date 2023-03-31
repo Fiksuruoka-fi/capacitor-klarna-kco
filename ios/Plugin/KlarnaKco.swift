@@ -3,13 +3,11 @@ import Capacitor
 import os
 import UIKit
 import KlarnaMobileSDK
-import NotificationBannerSwift
 
 class KlarnaKco: NSObject {
     private let config: KlarnaKcoConfig
     private let bridge: CAPBridgeProtocol
     private let plugin: KlarnaKcoPlugin
-    private var banner: FloatingNotificationBanner?
     public var opened = false
     public var checkout: KlarnaCheckoutView?
     public var checkoutViewController: KlarnaKcoViewController?
@@ -135,15 +133,6 @@ class KlarnaKco: NSObject {
     
     func destroy() {
         DispatchQueue.main.async {
-            if let banner = self.banner {
-                let numberOfBanners = banner.bannerQueue.numberOfBanners
-                CAPLog.print("Klarna KCO plugin: Dismiss " + numberOfBanners.description + " banner(s)")
-                (0..<numberOfBanners).forEach { _ in
-                    self.dismissBanner()
-                }
-                self.banner = nil
-            }
-            
             CAPLog.print("Klarna KCO plugin: Close checkout view")
             self.checkoutViewController?.dismiss(animated: true)
 
@@ -218,32 +207,8 @@ extension KlarnaKco {
         self.checkout?.checkoutOptions?.merchantHandlesEPM = self.config.handleEPM
         self.checkout?.checkoutOptions?.merchantHandlesValidationErrors = self.config.handleValidationErrors
         self.checkout?.loggingLevel = self.config.loggingLevel
-    }
-}
-
-extension KlarnaKco: NotificationBannerDelegate {
-    func notificationBannerWillAppear(_ banner: BaseNotificationBanner) {
-        self.notifyWeb(key: "bannerWillShow", data: nil)
-        
-        let bannerHeight = banner.bannerHeight
-
-        CAPLog.print("Klarna KCO plugin: Banner will show with height of " + bannerHeight.description + "px")
-
-        self.checkoutViewController?.animateHeight(height: bannerHeight)
-    }
-    
-    func notificationBannerDidAppear(_ banner: BaseNotificationBanner) {
-        self.notifyWeb(key: "bannerDidShow", data: nil)
-    }
-    
-    func notificationBannerWillDisappear(_ banner: BaseNotificationBanner) {
-        self.notifyWeb(key: "bannerWillDissapear", data: nil)
-        CAPLog.print("Klarna KCO plugin: Banner will hide")
-
-        self.checkoutViewController?.animateHeight(height: 0)
-    }
-    
-    func notificationBannerDidDisappear(_ banner: BaseNotificationBanner) {
-        self.notifyWeb(key: "bannerDidDissapear", data: nil)
+        self.checkout?.theme = self.config.theme
+        self.checkout?.environment = self.config.environment
+        self.checkout?.region = self.config.region
     }
 }
