@@ -235,11 +235,13 @@ class KlarnaKco(private val config: KlarnaKcoConfig, var plugin: KlarnaKcoPlugin
             returnURL = config.androidReturnUrl,
             eventHandler = eventHandler,
             environment = config.environment,
-            region = config.region
+            region = config.region,
+            theme = config.theme,
         )
 
         checkout?.checkoutOptions?.merchantHandlesValidationErrors = this.config.handleValidationErrors
         checkout?.checkoutOptions?.merchantHandlesEPM = this.config.handleEPM
+        checkout?.loggingLevel = this.config.loggingLevel
 
         if (checkoutView == null) {
             checkoutView = KlarnaKcoView(this, checkout!!)
