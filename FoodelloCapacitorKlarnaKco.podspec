@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target  = '13.0'
   s.static_framework = true
   s.dependency 'Capacitor'
-  s.dependency 'KlarnaMobileSDK', '> 2.5.1'
+  s.dependency 'KlarnaMobileSDK', '>= 2.5.1'
   s.swift_version = '5.1'
 end
