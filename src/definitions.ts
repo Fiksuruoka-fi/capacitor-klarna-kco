@@ -330,6 +330,15 @@ export interface PluginsConfig {
      * @example "production"
      */
     environment?: EnvironmentsEnum;
+
+    /**
+     * Set KCO native theme color.
+     *
+     * @since 2.0.0
+     * @default "light"
+     * @example "automatic"
+     */
+    theme?: ThemesEnum;
   };
 }
 
@@ -379,6 +388,12 @@ export enum EnvironmentsEnum {
   Playground = 'playground',
   Staging = 'staging',
   Production = 'production',
+}
+
+export enum ThemesEnum {
+  Automatic = 'automatic',
+  Dark = 'dark',
+  Light = 'light',
 }
 
 export enum EventsEnum {

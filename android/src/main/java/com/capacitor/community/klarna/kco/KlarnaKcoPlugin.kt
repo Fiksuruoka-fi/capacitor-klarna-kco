@@ -5,6 +5,7 @@ import com.getcapacitor.annotation.CapacitorPlugin
 import com.klarna.mobile.sdk.api.KlarnaEnvironment
 import com.klarna.mobile.sdk.api.KlarnaLoggingLevel
 import com.klarna.mobile.sdk.api.KlarnaRegion
+import com.klarna.mobile.sdk.api.KlarnaTheme
 
 @CapacitorPlugin(name = "KlarnaKco")
 class KlarnaKcoPlugin : Plugin() {
@@ -143,6 +144,13 @@ class KlarnaKcoPlugin : Plugin() {
             "verbose" -> config.loggingLevel = KlarnaLoggingLevel.Verbose
             "error" -> config.loggingLevel = KlarnaLoggingLevel.Error
             "off" -> config.loggingLevel = KlarnaLoggingLevel.Off
+            else -> {}
+        }
+
+        when (getConfig().getString("theme", "")) {
+            "light" -> config.theme = KlarnaTheme.LIGHT
+            "dark" -> config.theme = KlarnaTheme.DARK
+            "automatic" -> config.theme = KlarnaTheme.AUTOMATIC
             else -> {}
         }
     }
