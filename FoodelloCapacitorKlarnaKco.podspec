@@ -15,6 +15,5 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.dependency 'Capacitor'
   s.dependency 'KlarnaMobileSDK', '> 2.5.1'
-  s.dependency 'NotificationBannerSwift', '> 3.0.0'
   s.swift_version = '5.1'
 end
