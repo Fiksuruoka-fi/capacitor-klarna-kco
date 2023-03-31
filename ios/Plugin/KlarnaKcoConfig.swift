@@ -10,5 +10,6 @@ public struct KlarnaKcoConfig {
     var region: KlarnaRegion = KlarnaRegion.eu
     var environment: KlarnaEnvironment = KlarnaEnvironment.playground
     var loggingLevel: KlarnaLoggingLevel = KlarnaLoggingLevel.off
+    var theme: KlarnaTheme = KlarnaTheme.light
 }
 

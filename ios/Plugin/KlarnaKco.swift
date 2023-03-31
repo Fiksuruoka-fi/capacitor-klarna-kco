@@ -3,13 +3,11 @@ import Capacitor
 import os
 import UIKit
 import KlarnaMobileSDK
-import NotificationBannerSwift
 
 class KlarnaKco: NSObject {
     private let config: KlarnaKcoConfig
     private let bridge: CAPBridgeProtocol
     private let plugin: KlarnaKcoPlugin
-    private var banner: FloatingNotificationBanner?
     public var opened = false
     public var checkout: KlarnaCheckoutView?
     public var checkoutViewController: KlarnaKcoViewController?
@@ -135,15 +133,6 @@ class KlarnaKco: NSObject {
     
     func destroy() {
         DispatchQueue.main.async {
-            if let banner = self.banner {
-                let numberOfBanners = banner.bannerQueue.numberOfBanners
-                CAPLog.print("Klarna KCO plugin: Dismiss " + numberOfBanners.description + " banner(s)")
-                (0..<numberOfBanners).forEach { _ in
-                    self.dismissBanner()
-                }
-                self.banner = nil
-            }
-            
             CAPLog.print("Klarna KCO plugin: Close checkout view")
             self.checkoutViewController?.dismiss(animated: true)
 
@@ -153,40 +142,6 @@ class KlarnaKco: NSObject {
 
             self.checkout?.removeFromSuperview()
             self.checkout = nil
-        }
-    }
-    
-    func showBanner(title: String, subtitle: String, style: BannerStyle, autoDismiss: Bool, dismissOnTap: Bool, backgroundColor: UIColor?) {
-        DispatchQueue.main.async {
-            if (self.banner?.bannerQueue.numberOfBanners ?? 0) > 0 {
-                CAPLog.print("Klarna KCO plugin: Add banner \"" + title + "\" to queue")
-            } else {
-                CAPLog.print("Klarna KCO plugin: Show banner \"" + title + "\"")
-            }
-
-            let banner = FloatingNotificationBanner(title: title, subtitle: subtitle, style: style)
-            banner.autoDismiss = autoDismiss
-            banner.dismissOnTap = dismissOnTap
-            banner.delegate = self
-            
-            if backgroundColor != nil {
-                banner.backgroundColor = backgroundColor
-            }
-            
-            banner.show()
-
-            self.banner = banner
-        }
-    }
-    
-    func dismissBanner() {
-        DispatchQueue.main.async {
-            if let banner = self.banner {
-                CAPLog.print("Klarna KCO plugin: Dismiss visible banner")
-                banner.dismiss()
-            } else {
-                CAPLog.print("Klarna KCO plugin: No banner present")
-            }
         }
     }
     
@@ -252,32 +207,5 @@ extension KlarnaKco {
         self.checkout?.checkoutOptions?.merchantHandlesEPM = self.config.handleEPM
         self.checkout?.checkoutOptions?.merchantHandlesValidationErrors = self.config.handleValidationErrors
         self.checkout?.loggingLevel = self.config.loggingLevel
-    }
-}
-
-extension KlarnaKco: NotificationBannerDelegate {
-    func notificationBannerWillAppear(_ banner: BaseNotificationBanner) {
-        self.notifyWeb(key: "bannerWillShow", data: nil)
-        
-        let bannerHeight = banner.bannerHeight
-
-        CAPLog.print("Klarna KCO plugin: Banner will show with height of " + bannerHeight.description + "px")
-
-        self.checkoutViewController?.animateHeight(height: bannerHeight)
-    }
-    
-    func notificationBannerDidAppear(_ banner: BaseNotificationBanner) {
-        self.notifyWeb(key: "bannerDidShow", data: nil)
-    }
-    
-    func notificationBannerWillDisappear(_ banner: BaseNotificationBanner) {
-        self.notifyWeb(key: "bannerWillDissapear", data: nil)
-        CAPLog.print("Klarna KCO plugin: Banner will hide")
-
-        self.checkoutViewController?.animateHeight(height: 0)
-    }
-    
-    func notificationBannerDidDisappear(_ banner: BaseNotificationBanner) {
-        self.notifyWeb(key: "bannerDidDissapear", data: nil)
     }
 }

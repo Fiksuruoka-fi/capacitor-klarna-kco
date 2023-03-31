@@ -9,8 +9,6 @@ CAP_PLUGIN(KlarnaKcoPlugin, "KlarnaKco",
            CAP_PLUGIN_METHOD(suspend, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(initialize, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(open, CAPPluginReturnPromise);
-           CAP_PLUGIN_METHOD(showBanner, CAPPluginReturnPromise);
-           CAP_PLUGIN_METHOD(dismissBanner, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(close, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setSnippet, CAPPluginReturnNone);
            CAP_PLUGIN_METHOD(destroy, CAPPluginReturnNone);

@@ -1,7 +1,6 @@
 import Foundation
 import Capacitor
 import KlarnaMobileSDK
-import NotificationBannerSwift
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
@@ -31,49 +30,6 @@ public class KlarnaKcoPlugin: CAPPlugin {
         } else {
             call.reject(result.message)
         }
-    }
-    
-    @objc
-    func showBanner(_ call: CAPPluginCall) {
-        guard let implementation = self.implementation else {
-            call.reject("Klarna plugin not initialized")
-            return
-        }
-
-        let title = call.getString("title", "")
-        let subtitle = call.getString("subtitle", "")
-        let autoDismiss = call.getBool("autoDismiss", true)
-        let dismissOnTap = call.getBool("dismissOnTap", true)
-        let backgroundColor = {
-            if let color = call.getString("backgroundColor") {
-                return UIColor(hexString: color)
-            }
-            return nil
-        }
-
-        let style = {
-            switch call.getString("style") {
-            case "success":
-                return BannerStyle.success
-            case "warning":
-                return BannerStyle.warning
-            case "danger":
-                return BannerStyle.danger
-            case "info":
-                return BannerStyle.info
-            default:
-                return BannerStyle.info
-            }
-        }
-        
-        implementation.showBanner(title: title, subtitle: subtitle, style: style(), autoDismiss: autoDismiss, dismissOnTap: dismissOnTap, backgroundColor: backgroundColor())
-        call.resolve(["state": "shown"])
-    }
-    
-    @objc
-    func dismissBanner(_ call: CAPPluginCall) {
-        self.implementation?.dismissBanner()
-        call.resolve(["state": "dismissed"])
     }
     
     @objc
@@ -158,7 +114,6 @@ extension KlarnaKcoPlugin {
             config.region = KlarnaRegion.oc
             break
         default:
-            config.region = KlarnaRegion.eu
             break
         }
         
@@ -176,7 +131,6 @@ extension KlarnaKcoPlugin {
             config.environment = KlarnaEnvironment.production
             break
         default:
-            config.environment = KlarnaEnvironment.playground
             break
         }
         
@@ -191,37 +145,21 @@ extension KlarnaKcoPlugin {
             config.loggingLevel = KlarnaLoggingLevel.off
             break
         default:
-            config.loggingLevel = KlarnaLoggingLevel.off
+            break
+        }
+        
+        switch getConfig().getString("theme", "") {
+        case "light":
+            config.theme = KlarnaTheme.light
+            break
+        case "dark":
+            config.theme = KlarnaTheme.dark
+            break
+        case "automatic":
+            config.theme = KlarnaTheme.automatic
+            break
+        default:
             break
         }
     }
 }
-
-extension UIColor {
-    public convenience init?(hexString: String) {
-        let r, g, b, a: CGFloat
-        
-        if hexString.hasPrefix("#") {
-            let start = hexString.index(hexString.startIndex, offsetBy: 1)
-            var hexColor = String(hexString[start...])
-            if (hexColor.count == 6) {
-                hexColor = "\(hexColor)ff"
-            }
-            let scanner = Scanner(string: hexColor)
-            var hexNumber: UInt64 = 0
-            
-            if scanner.scanHexInt64(&hexNumber) {
-                r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-                g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-                b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-                a = CGFloat(hexNumber & 0x000000ff) / 255
-                
-                self.init(red: r, green: g, blue: b, alpha: a)
-                return
-            }
-        }
-        
-        return nil
-    }
-}
-
