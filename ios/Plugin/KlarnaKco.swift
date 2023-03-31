@@ -3,14 +3,15 @@ import Capacitor
 import os
 import UIKit
 import KlarnaMobileSDK
+import NotificationBannerSwift
 
 class KlarnaKco: NSObject {
     private let config: KlarnaKcoConfig
     private let bridge: CAPBridgeProtocol
     private let plugin: KlarnaKcoPlugin
+    private var banner: FloatingNotificationBanner?
     public var opened = false
     public var checkout: KlarnaCheckoutView?
-    public var sdk: KlarnaHybridSDK?
     public var checkoutViewController: KlarnaKcoViewController?
     
     init(plugin: KlarnaKcoPlugin, config: KlarnaKcoConfig) {
@@ -23,6 +24,7 @@ class KlarnaKco: NSObject {
     
     @objc
     func initialize() {
+        let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.main.async {
             CAPLog.print("Klarna KCO plugin: Initialize")
 
@@ -30,77 +32,118 @@ class KlarnaKco: NSObject {
                 self.checkoutViewController = KlarnaKcoViewController()
             }
 
-            self.initKlarnaHybridSdk()
+            self.initKlarnaSdk()
+            semaphore.signal()
         }
+        semaphore.wait()
+        return
     }
     
-    @objc
-    func setSnippet(snippet: String) {
+    func setSnippet(snippet: String) -> (status: Bool, message: String){
+        var status: Bool = false
+        var message: String = ""
+        let semaphore = DispatchSemaphore(value: 0)
+
         DispatchQueue.main.async {
-            CAPLog.print("Klarna KCO plugin: Set snippet on view")
-            self.checkout?.setSnippet(snippet)
-        }
-    }
-    
-    @objc
-    func open() {
-        DispatchQueue.main.async {
-            if self.checkoutViewController == nil {
-                CAPLog.print("Klarna KCO plugin: Checkout view is not initialized")
+            guard let checkout = self.checkout else {
+                message = "Checkout SDK not initialized"
+                semaphore.signal()
                 return
             }
             
-            if self.checkoutViewController?.presentingViewController != nil {
-                CAPLog.print("Klarna KCO plugin: Checkout view is already open")
+            status = true
+            message = "Set snippet on checkout view"
+            checkout.setSnippet(snippet)
+            semaphore.signal()
+        }
+        
+        semaphore.wait()
+        CAPLog.print("Klarna KCO plugin: " + message)
+        return (status, message)
+    }
+    
+    func open() -> (status: Bool, message: String){
+        var message = ""
+        var status = false
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        DispatchQueue.main.async {
+            guard let checkoutViewController = self.checkoutViewController else {
+                message = "Checkout view is not initialized"
+                semaphore.signal()
                 return
             }
 
-            self.checkoutViewController?.addKcoView(kco: self, kcoView: self.checkout!)
-            self.bridge.viewController?.present(self.checkoutViewController!, animated: true, completion: nil)
-        }
-    }
-    
-    @objc
-    func close() {
-        DispatchQueue.main.async {
-            if !(self.checkoutViewController?.presentingViewController != nil) {
-                if self.checkoutViewController == nil {
-                    CAPLog.print("Klarna KCO plugin: Checkout view is not initialized")
-                } else {
-                    CAPLog.print("Klarna KCO plugin: Checkout view is not open")
-                }
+            guard let bridgeVc = self.bridge.viewController else {
+                message = "Bridge view is not initialized"
+                semaphore.signal()
                 return
             }
 
-            CAPLog.print("Klarna KCO plugin: Close checkout view")
-            self.checkoutViewController?.dismiss(animated: true)
+            if checkoutViewController.presentingViewController != nil {
+                message = "Checkout view is already open"
+            } else {
+                checkoutViewController.addKcoView(kco: self, kcoView: self.checkout!)
+                bridgeVc.present(checkoutViewController, animated: true, completion: nil)
+                message = "Opened checkout view"
+                status = true
+            }
+            semaphore.signal()
         }
+
+        semaphore.wait()
+        CAPLog.print("Klarna KCO plugin: " + message)
+        return (status, message)
     }
     
-    @available(iOS 15.0, *)
-    @objc
-    func expand() {
+    func close() -> (status: Bool, message: String){
+        var message = ""
+        var status = false
+        let semaphore = DispatchSemaphore(value: 0)
+
         DispatchQueue.main.async {
-            CAPLog.print("Klarna KCO plugin: Expand view")
-            self.checkoutViewController?.expand()
+            guard let checkoutViewController = self.checkoutViewController else {
+                message = "Checkout view is not initialized"
+                semaphore.signal()
+                return
+            }
+            
+            if checkoutViewController.presentingViewController != nil {
+                checkoutViewController.dismiss(animated: true)
+                status = true
+                message = "Closed checkout view"
+            } else {
+                message = "Checkout view is not open"
+            }
+            semaphore.signal()
         }
+        
+        semaphore.wait()
+        CAPLog.print("Klarna KCO plugin: " + message)
+        return (status, message)
     }
     
-    @objc
     func resume() {
         CAPLog.print("Klarna KCO plugin: Resume widget")
         self.checkout?.resume()
     }
     
-    @objc
     func suspend() {
         CAPLog.print("Klarna KCO plugin: Suspend widget")
         self.checkout?.suspend()
     }
     
-    @objc
     func destroy() {
         DispatchQueue.main.async {
+            if let banner = self.banner {
+                let numberOfBanners = banner.bannerQueue.numberOfBanners
+                CAPLog.print("Klarna KCO plugin: Dismiss " + numberOfBanners.description + " banner(s)")
+                (0..<numberOfBanners).forEach { _ in
+                    self.dismissBanner()
+                }
+                self.banner = nil
+            }
+            
             CAPLog.print("Klarna KCO plugin: Close checkout view")
             self.checkoutViewController?.dismiss(animated: true)
 
@@ -113,7 +156,40 @@ class KlarnaKco: NSObject {
         }
     }
     
-    @objc
+    func showBanner(title: String, subtitle: String, style: BannerStyle, autoDismiss: Bool, dismissOnTap: Bool, backgroundColor: UIColor?) {
+        DispatchQueue.main.async {
+            if (self.banner?.bannerQueue.numberOfBanners ?? 0) > 0 {
+                CAPLog.print("Klarna KCO plugin: Add banner \"" + title + "\" to queue")
+            } else {
+                CAPLog.print("Klarna KCO plugin: Show banner \"" + title + "\"")
+            }
+
+            let banner = FloatingNotificationBanner(title: title, subtitle: subtitle, style: style)
+            banner.autoDismiss = autoDismiss
+            banner.dismissOnTap = dismissOnTap
+            banner.delegate = self
+            
+            if backgroundColor != nil {
+                banner.backgroundColor = backgroundColor
+            }
+            
+            banner.show()
+
+            self.banner = banner
+        }
+    }
+    
+    func dismissBanner() {
+        DispatchQueue.main.async {
+            if let banner = self.banner {
+                CAPLog.print("Klarna KCO plugin: Dismiss visible banner")
+                banner.dismiss()
+            } else {
+                CAPLog.print("Klarna KCO plugin: No banner present")
+            }
+        }
+    }
+    
     func notifyWeb(key: String, data: [String : Any]?) -> Void {
         self.plugin.notifyListeners(key, data: data ?? [:])
     }
@@ -166,7 +242,7 @@ extension KlarnaKco: KlarnaEventHandler {
 
 // Setup Klarna SDK
 extension KlarnaKco {
-    func initKlarnaHybridSdk() {
+    func initKlarnaSdk() {
         if self.checkout !== nil {
             return
         }
@@ -176,5 +252,32 @@ extension KlarnaKco {
         self.checkout?.checkoutOptions?.merchantHandlesEPM = self.config.handleEPM
         self.checkout?.checkoutOptions?.merchantHandlesValidationErrors = self.config.handleValidationErrors
         self.checkout?.loggingLevel = self.config.loggingLevel
+    }
+}
+
+extension KlarnaKco: NotificationBannerDelegate {
+    func notificationBannerWillAppear(_ banner: BaseNotificationBanner) {
+        self.notifyWeb(key: "bannerWillShow", data: nil)
+        
+        let bannerHeight = banner.bannerHeight
+
+        CAPLog.print("Klarna KCO plugin: Banner will show with height of " + bannerHeight.description + "px")
+
+        self.checkoutViewController?.animateHeight(height: bannerHeight)
+    }
+    
+    func notificationBannerDidAppear(_ banner: BaseNotificationBanner) {
+        self.notifyWeb(key: "bannerDidShow", data: nil)
+    }
+    
+    func notificationBannerWillDisappear(_ banner: BaseNotificationBanner) {
+        self.notifyWeb(key: "bannerWillDissapear", data: nil)
+        CAPLog.print("Klarna KCO plugin: Banner will hide")
+
+        self.checkoutViewController?.animateHeight(height: 0)
+    }
+    
+    func notificationBannerDidDisappear(_ banner: BaseNotificationBanner) {
+        self.notifyWeb(key: "bannerDidDissapear", data: nil)
     }
 }

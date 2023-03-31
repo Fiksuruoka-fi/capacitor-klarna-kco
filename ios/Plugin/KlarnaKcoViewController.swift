@@ -6,9 +6,12 @@ class KlarnaKcoViewController: UIViewController {
     public let scrollView = UIScrollView()
     public var contentView: KlarnaCheckoutView?
     private var implementation: KlarnaKco?
+    private var initialHeight: CGFloat?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.initialHeight = view.bounds.height
+
         view.backgroundColor = .white
         view.addSubview(scrollView)
     }
@@ -18,21 +21,6 @@ class KlarnaKcoViewController: UIViewController {
         
         self.scrollView.frame = view.bounds
         self.contentView?.frame = scrollView.bounds
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.modalPresentationStyle = .pageSheet
-        self.modalTransitionStyle = .coverVertical
-
-        if #available(iOS 15.0, *) {
-            if let presentationController = self.sheetPresentationController {
-                presentationController.detents = [.medium(), .large()]
-                presentationController.largestUndimmedDetentIdentifier = .medium
-                presentationController.prefersGrabberVisible = true
-                presentationController.delegate = self
-            }
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,37 +45,25 @@ class KlarnaKcoViewController: UIViewController {
         contentView?.removeFromSuperview()
         contentView = nil
     }
-}
-
-@available(iOS 15.0, *)
-extension KlarnaKcoViewController: UISheetPresentationControllerDelegate {
-    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
-        if let detentIdentifier = sheetPresentationController.selectedDetentIdentifier {
-            self.handleDetentChange(changedTo: detentIdentifier)
-        }
-    }
     
-    func handleDetentChange(changedTo: UISheetPresentationController.Detent.Identifier) {
-        if changedTo == .large {
-            CAPLog.print("Klarna KCO plugin view size changed: .large")
-            self.implementation?.notifyWeb(key: "expanded", data: [
-                "state": true
-            ])
-        } else {
-            CAPLog.print("Klarna KCO plugin view size changed: .medium")
-            self.implementation?.notifyWeb(key: "expanded", data: [
-                "state": false
-            ])
-        }
-    }
-    
-    func expand() {
-        if let sheet = self.sheetPresentationController {
-            sheet.animateChanges {
-                sheet.largestUndimmedDetentIdentifier = .large
-                sheet.selectedDetentIdentifier = .large
-                self.handleDetentChange(changedTo: .large)
-            }
+    @objc func animateHeight(height: CGFloat) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                var frame = self.view.frame
+                if (height > 0) {
+                    let statusBarHeight = self.view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+                    frame.origin.y += height - statusBarHeight
+                    frame.size.height -= height - statusBarHeight
+                } else {
+                    frame.origin.y = 0
+                    frame.size.height = self.initialHeight!
+                }
+                
+                self.view.frame = frame
+            }, completion: { _ in
+                self.scrollView.layoutIfNeeded()
+                self.contentView?.layoutIfNeeded()
+            })
         }
     }
 }
