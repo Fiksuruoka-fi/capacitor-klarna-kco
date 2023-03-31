@@ -60,7 +60,6 @@ class KlarnaKcoView(private val kco: KlarnaKco, private val kcoView: KlarnaCheck
                         kco.notifyWeb("opened", JSObject())
                     }
                     BottomSheetBehavior.STATE_HIDDEN -> {
-                        // removeCheckoutView()
                         kco.opened = false
                         kco.notifyWeb("closed", JSObject())
                     }
