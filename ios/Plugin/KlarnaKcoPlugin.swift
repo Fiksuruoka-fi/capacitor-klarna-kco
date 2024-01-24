@@ -15,6 +15,7 @@ public class KlarnaKcoPlugin: CAPPlugin {
     func initialize(_ call: CAPPluginCall) {
         self.klarnaKcoConfig()
         self.implementation = KlarnaKco(plugin: self, config: self.config)
+        call.resolve(["status": 200, "message": "ok"])
     }
     
     @objc
