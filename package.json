@@ -1,6 +1,6 @@
 {
   "name": "@foodello/capacitor-klarna-kco",
-  "version": "2.0.1",
+  "version": "5.0.0",
   "description": "Klarna Checkout integration to Capacitor.js",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -67,13 +67,13 @@
   },
   "homepage": "https://github.com/Fiksuruoka-fi/capacitor-klarna-kco#readme",
   "peerDependencies": {
-    "@capacitor/core": "^4.0.0"
+    "@capacitor/core": "^5.0.0"
   },
   "devDependencies": {
-    "@capacitor/android": "^4.6.1",
-    "@capacitor/core": "^4.6.1",
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/core": "^5.0.0",
     "@capacitor/docgen": "^0.0.17",
-    "@capacitor/ios": "^4.6.1",
+    "@capacitor/ios": "^5.0.0",
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^1.0.1",
     "@ionic/swiftlint-config": "^1.1.2",
