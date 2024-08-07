@@ -88,7 +88,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.Complete,
     listenerFunc: (data: EventData[EventsEnum.Complete]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when KCO should redirect for external payment.
@@ -99,7 +99,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.External,
     listenerFunc: (data: EventData[EventsEnum.External]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when the KCO iframe has been created successfully.
@@ -110,7 +110,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.Load,
     listenerFunc: (data: EventData[EventsEnum.Load]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when the user has interacted with the KCO iframe.
@@ -121,7 +121,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.UserInteracted,
     listenerFunc: (data: EventData[EventsEnum.UserInteracted]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when the user has interacted with the KCO iframe.
@@ -132,7 +132,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.Customer,
     listenerFunc: (data: EventData[EventsEnum.Customer]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when organization type (B2B or Person) was changed.
@@ -143,7 +143,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.Change,
     listenerFunc: (data: EventData[EventsEnum.Change]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when postal code, country or email was changed.
@@ -154,7 +154,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.BillingAddressChange,
     listenerFunc: (data: EventData[EventsEnum.BillingAddressChange]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when shipping address was submitted.
@@ -165,7 +165,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.ShippingAddressChange,
     listenerFunc: (data: EventData[EventsEnum.ShippingAddressChange]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when the user has selected a new shipping option.
@@ -176,7 +176,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.ShippingOptionChanged,
     listenerFunc: (data: EventData[EventsEnum.ShippingOptionChanged]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when we got changes on the cart from the merchant.
@@ -187,7 +187,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.OrderTotalChange,
     listenerFunc: (data: EventData[EventsEnum.OrderTotalChange]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when a checkbox was checked/unchecked.
@@ -198,7 +198,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.CheckboxChange,
     listenerFunc: (data: EventData[EventsEnum.CheckboxChange]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for network error in KCO iframe.
@@ -209,7 +209,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.NetworkError,
     listenerFunc: (data: EventData[EventsEnum.NetworkError]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when the user is about to be redirected to the confirmation page.
@@ -220,7 +220,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.RedirectInitiated,
     listenerFunc: (data: EventData[EventsEnum.RedirectInitiated]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when the confirmation iframe has been created succesfully.
@@ -231,7 +231,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.LoadConfirmation,
     listenerFunc: (data: EventData[EventsEnum.LoadConfirmation]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 
   /**
    * Listen for when the external payment method is set.
@@ -240,7 +240,7 @@ export interface KlarnaKcoPlugin {
   addListener(
     eventName: EventsEnum.External,
     listenerFunc: (data: EventData[EventsEnum.External]) => void,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 }
 
 export interface SetSnippetOptions {
