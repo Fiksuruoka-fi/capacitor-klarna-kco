@@ -25,8 +25,8 @@ npx cap sync
 {
   "plugins": {
     "KlarnaKco": {
-      "returnUrlIos": "your-app-scheme://",
-      "returnUrlAndroid": "your-app-scheme://",
+      "iosReturnUrl": "your-app-scheme://",
+      "androidReturnUrl": "your-app-scheme://",
       "environment": "playground", // Optional
       "handleEPM": false, // Optional
       "handleValidationErrors": false, // Optional
