@@ -120,6 +120,7 @@ https://docs.klarna.com/in-app/
 * [`addListener(EventsEnum.NetworkError, ...)`](#addlistenereventsenumnetworkerror-)
 * [`addListener(EventsEnum.RedirectInitiated, ...)`](#addlistenereventsenumredirectinitiated-)
 * [`addListener(EventsEnum.LoadConfirmation, ...)`](#addlistenereventsenumloadconfirmation-)
+* [`addListener(EventsEnum.External, ...)`](#addlistenereventsenumexternal-)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
 * [Enums](#enums)
@@ -237,7 +238,7 @@ Suspend interactions on Klarna Checkout widget.
 ### addListener(EventsEnum.Complete, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.Complete, listenerFunc: (data: EventData[EventsEnum.Complete]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.Complete, listenerFunc: (data: EventData[EventsEnum.Complete]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when the payment created.
@@ -247,7 +248,7 @@ Listen for when the payment created.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.Complete</a></code>     |
 | **`listenerFunc`** | <code>(data: { url: string; path: string; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -257,7 +258,7 @@ Listen for when the payment created.
 ### addListener(EventsEnum.External, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.External, listenerFunc: (data: EventData[EventsEnum.External]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.External, listenerFunc: (data: EventData[EventsEnum.External]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when KCO should redirect for external payment.
@@ -269,7 +270,7 @@ Listen for when KCO should redirect for external payment.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.External</a></code>     |
 | **`listenerFunc`** | <code>(data: { url: string; path: string; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 2.0.0
 
@@ -279,7 +280,7 @@ Listen for when KCO should redirect for external payment.
 ### addListener(EventsEnum.Load, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.Load, listenerFunc: (data: EventData[EventsEnum.Load]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.Load, listenerFunc: (data: EventData[EventsEnum.Load]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when the KCO iframe has been created successfully.
@@ -289,7 +290,7 @@ Listen for when the KCO iframe has been created successfully.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.Load</a></code>                                                                        |
 | **`listenerFunc`** | <code>(data: { customer: { type: string; }; shipping_address: { country: string; postal_code: string; }; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -299,7 +300,7 @@ Listen for when the KCO iframe has been created successfully.
 ### addListener(EventsEnum.UserInteracted, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.UserInteracted, listenerFunc: (data: EventData[EventsEnum.UserInteracted]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.UserInteracted, listenerFunc: (data: EventData[EventsEnum.UserInteracted]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when the user has interacted with the KCO iframe.
@@ -309,7 +310,7 @@ Listen for when the user has interacted with the KCO iframe.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.UserInteracted</a></code> |
 | **`listenerFunc`** | <code>(data: { type: string; }) =&gt; void</code>                |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -319,7 +320,7 @@ Listen for when the user has interacted with the KCO iframe.
 ### addListener(EventsEnum.Customer, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.Customer, listenerFunc: (data: EventData[EventsEnum.Customer]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.Customer, listenerFunc: (data: EventData[EventsEnum.Customer]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when the user has interacted with the KCO iframe.
@@ -329,7 +330,7 @@ Listen for when the user has interacted with the KCO iframe.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.Customer</a></code> |
 | **`listenerFunc`** | <code>(data: { type: string; }) =&gt; void</code>          |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -339,7 +340,7 @@ Listen for when the user has interacted with the KCO iframe.
 ### addListener(EventsEnum.Change, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.Change, listenerFunc: (data: EventData[EventsEnum.Change]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.Change, listenerFunc: (data: EventData[EventsEnum.Change]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when organization type (B2B or Person) was changed.
@@ -349,7 +350,7 @@ Listen for when organization type (B2B or Person) was changed.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.Change</a></code>                                 |
 | **`listenerFunc`** | <code>(data: { email: string; postal_code: string; country: string; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -359,7 +360,7 @@ Listen for when organization type (B2B or Person) was changed.
 ### addListener(EventsEnum.BillingAddressChange, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.BillingAddressChange, listenerFunc: (data: EventData[EventsEnum.BillingAddressChange]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.BillingAddressChange, listenerFunc: (data: EventData[EventsEnum.BillingAddressChange]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when postal code, country or email was changed.
@@ -369,7 +370,7 @@ Listen for when postal code, country or email was changed.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.BillingAddressChange</a></code>    |
 | **`listenerFunc`** | <code>(data: { postal_code: string; country: string; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -379,7 +380,7 @@ Listen for when postal code, country or email was changed.
 ### addListener(EventsEnum.ShippingAddressChange, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.ShippingAddressChange, listenerFunc: (data: EventData[EventsEnum.ShippingAddressChange]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.ShippingAddressChange, listenerFunc: (data: EventData[EventsEnum.ShippingAddressChange]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when shipping address was submitted.
@@ -389,7 +390,7 @@ Listen for when shipping address was submitted.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.ShippingAddressChange</a></code>   |
 | **`listenerFunc`** | <code>(data: { postal_code: string; country: string; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -399,7 +400,7 @@ Listen for when shipping address was submitted.
 ### addListener(EventsEnum.ShippingOptionChanged, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.ShippingOptionChanged, listenerFunc: (data: EventData[EventsEnum.ShippingOptionChanged]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.ShippingOptionChanged, listenerFunc: (data: EventData[EventsEnum.ShippingOptionChanged]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when the user has selected a new shipping option.
@@ -409,7 +410,7 @@ Listen for when the user has selected a new shipping option.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.ShippingOptionChanged</a></code>                                                                                |
 | **`listenerFunc`** | <code>(data: { description: string; id: string; name: string; price: number; promo: string; tax_amount: number; tax_rate: number; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -419,7 +420,7 @@ Listen for when the user has selected a new shipping option.
 ### addListener(EventsEnum.OrderTotalChange, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.OrderTotalChange, listenerFunc: (data: EventData[EventsEnum.OrderTotalChange]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.OrderTotalChange, listenerFunc: (data: EventData[EventsEnum.OrderTotalChange]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when we got changes on the cart from the merchant.
@@ -429,7 +430,7 @@ Listen for when we got changes on the cart from the merchant.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.OrderTotalChange</a></code> |
 | **`listenerFunc`** | <code>(data: { order_total: number; }) =&gt; void</code>           |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -439,7 +440,7 @@ Listen for when we got changes on the cart from the merchant.
 ### addListener(EventsEnum.CheckboxChange, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.CheckboxChange, listenerFunc: (data: EventData[EventsEnum.CheckboxChange]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.CheckboxChange, listenerFunc: (data: EventData[EventsEnum.CheckboxChange]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when a checkbox was checked/unchecked.
@@ -449,7 +450,7 @@ Listen for when a checkbox was checked/unchecked.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.CheckboxChange</a></code>   |
 | **`listenerFunc`** | <code>(data: { key: string; checked: boolean; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -459,7 +460,7 @@ Listen for when a checkbox was checked/unchecked.
 ### addListener(EventsEnum.NetworkError, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.NetworkError, listenerFunc: (data: EventData[EventsEnum.NetworkError]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.NetworkError, listenerFunc: (data: EventData[EventsEnum.NetworkError]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for network error in KCO iframe.
@@ -469,7 +470,7 @@ Listen for network error in KCO iframe.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.NetworkError</a></code>                    |
 | **`listenerFunc`** | <code>(data: <a href="#record">Record</a>&lt;string, never&gt;) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -479,7 +480,7 @@ Listen for network error in KCO iframe.
 ### addListener(EventsEnum.RedirectInitiated, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.RedirectInitiated, listenerFunc: (data: EventData[EventsEnum.RedirectInitiated]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.RedirectInitiated, listenerFunc: (data: EventData[EventsEnum.RedirectInitiated]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when the user is about to be redirected to the confirmation page.
@@ -489,7 +490,7 @@ Listen for when the user is about to be redirected to the confirmation page.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.RedirectInitiated</a></code> |
 | **`listenerFunc`** | <code>(data: true) =&gt; void</code>                                |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -499,7 +500,7 @@ Listen for when the user is about to be redirected to the confirmation page.
 ### addListener(EventsEnum.LoadConfirmation, ...)
 
 ```typescript
-addListener(eventName: EventsEnum.LoadConfirmation, listenerFunc: (data: EventData[EventsEnum.LoadConfirmation]) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: EventsEnum.LoadConfirmation, listenerFunc: (data: EventData[EventsEnum.LoadConfirmation]) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for when the confirmation iframe has been created succesfully.
@@ -509,7 +510,27 @@ Listen for when the confirmation iframe has been created succesfully.
 | **`eventName`**    | <code><a href="#eventsenum">EventsEnum.LoadConfirmation</a></code>                |
 | **`listenerFunc`** | <code>(data: <a href="#record">Record</a>&lt;string, never&gt;) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
+
+**Since:** 1.0.0
+
+--------------------
+
+
+### addListener(EventsEnum.External, ...)
+
+```typescript
+addListener(eventName: EventsEnum.External, listenerFunc: (data: EventData[EventsEnum.External]) => void) => Promise<PluginListenerHandle>
+```
+
+Listen for when the external payment method is set.
+
+| Param              | Type                                                           |
+| ------------------ | -------------------------------------------------------------- |
+| **`eventName`**    | <code><a href="#eventsenum">EventsEnum.External</a></code>     |
+| **`listenerFunc`** | <code>(data: { url: string; path: string; }) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -548,7 +569,7 @@ Listen for when the confirmation iframe has been created succesfully.
 | **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 
-### Enums
+#### EventData
 
 | Prop                                          | Type                                                                                                                                |
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -576,9 +597,7 @@ Listen for when the confirmation iframe has been created succesfully.
 
 Construct a type with a set of properties K of type T
 
-<code>{
- [P in K]: T;
- }</code>
+<code>{ [P in K]: T; }</code>
 
 
 ### Enums
